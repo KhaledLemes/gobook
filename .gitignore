@@ -3,3 +3,4 @@
 ./templates/mensagem_secreta/*.html
 ./templates/mensagem_secreta/*.css
 ./templates/mensagem_secreta/*
+.idea
