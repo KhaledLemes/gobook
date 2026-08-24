@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/KhaledLemes/gobook/internal/config"
+	"gobook/internal/config"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -17,7 +18,7 @@ func Connect() (*sql.DB, error) {
 
 	if err := db.Ping(); err != nil {
 		db.Close()
-		fmt.Println("erro ao abrir conexão sql", err)
+		fmt.Println(fmt.Errorf("erro ao abrir conexão SQL: %w", err))
 		return nil, err
 	}
 	return db, nil

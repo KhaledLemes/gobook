@@ -1,22 +1,29 @@
 package main
 
 import (
-	"fmt"
+	"gobook/internal/config"
+	"gobook/internal/router"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello World!"))
+func a(c *gin.Context) {
+	c.HTML(http.StatusOK, "index.html", gin.H{})
 }
 
 func main() {
-	fmt.Println("Hello World")
-	http.HandleFunc("/api/kk", handler)
+	config.Load()
+	r := router.GerarRouter()
 
 	// FileServer diz que root é a pasta selecionada
-	fs := http.FileServer(http.Dir("./web/templates/"))
+	//fs := http.FileServer(http.Dir("./web/templates/"))
 	// Handle diz "me passe um caminho e o que ele vai fazer
-	http.Handle("/", fs)
 
-	http.ListenAndServe(":8080", nil)
+	r.LoadHTMLFiles("./web/templates/index.html")
+	r.StaticFile("/css", "./web/templates/css/style.css")
+	r.GET("/", a)
+	//http.Handle("/", fs)
+	//http.ListenAndServe(":8080", r)
+	r.Run("localhost:8080")
 }

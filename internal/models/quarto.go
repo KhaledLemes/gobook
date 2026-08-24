@@ -1,10 +1,10 @@
 package models
 
 type Quarto struct {
-	Nome       string
-	ValorNoite float64
+	Nome       string  `json:"nome"`
+	ValorNoite float64 `json:"valor_noite"`
 
-	Disponivel bool
+	Disponivel bool `json:"disponivel"`
 
-	Propriedade Propriedade
+	Propriedade Propriedade `json:"propriedad"`
 }

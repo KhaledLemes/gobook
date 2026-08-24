@@ -32,14 +32,18 @@ CREATE TABLE propriedades(
     foreign key (dono) references usuarios(id)
 ) ENGINE=INNODB
 
+
 CREATE TABLE quartos(
     id int auto_increment primary key,
     nome varchar(50) not null,
     valor_noite int not null,
     disponivel bit not null default 0,
     propriedade_id int not null,
-    foreign key (propriedade_id) references propriedades(id)
+    foreign key (propriedade_id) references propriedades(id),
+    qt_disponivel int not null
 ) ENGINE=INNODB
+
+
 
 CREATE TABLE reservas(
     id int auto_increment primary key,
@@ -55,3 +59,4 @@ CREATE TABLE reservas(
     data_checkin timestamp not null,
     data_checkout timestamp not null
 ) ENGINE=INNODB
+

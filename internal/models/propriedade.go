@@ -3,23 +3,23 @@ package models
 type Categoria string
 
 const (
-	Hotel       Categoria = "Hotel"
-	Pousada     Categoria = "Casa"
-	Apartamento Categoria = "Apartamento"
-	Chale       Categoria = "Chalé"
+	Hotel       Categoria = "hotel"
+	Pousada     Categoria = "casa"
+	Apartamento Categoria = "apartamento"
+	Chale       Categoria = "chalé"
 )
 
 type Propriedade struct {
-	ID        int64
-	Nome      string
-	Descricao string
-	Estado    string
-	Cidade    string
+	ID        int64  `json:"id"`
+	Nome      string `json:"nome"`
+	Descricao string `json:"descricao"`
+	Estado    string `json:"estado"`
+	Cidade    string `json:"cidade"`
 
-	PetFriendly bool
+	PetFriendly bool `json:"pet_friendly"`
 
-	Categoria Categoria
-	Dono      Usuario
+	Categoria Categoria `json:"categoria"`
+	Dono      Usuario   `json:"dono"`
 
-	Quartos []Quarto
+	Quartos []Quarto `json:"quartos"`
 }

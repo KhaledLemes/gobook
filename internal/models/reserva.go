@@ -1,22 +1,22 @@
 package models
 
 type Reserva struct {
-	Propriedade Propriedade
-	Quarto      Quarto
+	Propriedade Propriedade `json:"propriedad"`
+	Quarto      Quarto      `json:"quarto"`
 
-	Comodidades []Comodidades
+	Comodidades []Comodidades `json:"comodidades"`
 
-	Reembolsavel bool
+	Reembolsavel bool `json:"reembolsavel"`
 
-	Adultos  uint8
-	Criancas uint8
+	Adultos  uint8 `json:"adultos"`
+	Criancas uint8 `json:"criancas"`
 
-	ValorNoite float64
-	ValorTotal float64
-	Taxas      float64
-	Noites     uint8
+	ValorNoite float64 `json:"valor_noite"`
+	ValorTotal float64 `json:"valor_total"`
+	Taxas      float64 `json:"taxas"`
+	Noites     uint8   `json:"noites"`
 
-	DataMarcado string
-	Checkin     string
-	Checkout    string
+	DataMarcado string `json:"data_marcado"`
+	Checkin     string `json:"checkin"`
+	Checkout    string `json:"checkout"`
 }
