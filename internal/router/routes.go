@@ -1,6 +1,7 @@
 package router
 
 import (
+	controller "gobook/internal/controllers"
 	"gobook/internal/middleware"
 
 	"github.com/gin-gonic/gin"
@@ -14,22 +15,25 @@ type Route struct {
 }
 
 func ConfigRouter(r *gin.Engine) *gin.Engine {
-	routes := usersRoutes
-	routes = append(routes, loginRoute)
+	r.Use(middleware.Logger())
 
-	for _, r := range propriedadesRouter {
-		routes = append(routes, r)
+	publicos := r.Group("/")
+	{
+		publicos.POST("/login", controller.Login)
+
+		publicos.POST("/usuarios", controller.CriaUsuario)
+
+		publicos.GET("/propriedades", controller.MostraTodasPropriedades)
+		publicos.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
+		publicos.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
 	}
 
-	for _, route := range routes {
-		if route.RequerAuth {
-			r.Handle(route.Metodo, route.URI,
-				middleware.Logger(
-					middleware.Autentica(route.Func)))
-		} else {
-			r.Handle(route.Metodo, route.URI,
-				middleware.Logger(route.Func))
-		}
+	protegidos := r.Group("/")
+	protegidos.Use(middleware.Autentica())
+	{
+		protegidos.POST("/propriedades", controller.CriarPropriedade)
+		protegidos.PUT("/propriedades/:id", controller.EditarPropriedade)
+		protegidos.DELETE("/propriedades/:id", controller.DeletaPropriedadePorID)
 	}
 	return r
 }

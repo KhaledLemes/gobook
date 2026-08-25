@@ -10,19 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Logger(next gin.HandlerFunc) gin.HandlerFunc {
+func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		log.Printf("\n%s, %s, %s at %s", c.Request.Method, c.Request.URL, c.Request.Host, time.Now())
-		next(c)
+		c.Next()
 	}
 }
 
-func Autentica(next gin.HandlerFunc) gin.HandlerFunc {
+func Autentica() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if err := auth.ValidadeToken(c.Request); err != nil {
 			responses.Err(c, http.StatusUnauthorized, err)
 			return
 		}
-		next(c)
 	}
 }

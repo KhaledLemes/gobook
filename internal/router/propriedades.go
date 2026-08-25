@@ -6,13 +6,19 @@ var propriedadesRouter = []Route{
 	{
 		URI:        "/propriedades",
 		Metodo:     "GET",
-		Func:       controller.MostraTodasPropriedas,
+		Func:       controller.MostraTodasPropriedades,
 		RequerAuth: false,
 	},
 	{
 		URI:        "/propriedades/{id}",
 		Metodo:     "GET",
 		Func:       controller.BuscaPropriedadePorID,
+		RequerAuth: false,
+	},
+	{
+		URI:        "/propriedades/{nome}",
+		Metodo:     "GET",
+		Func:       controller.BuscaPropriedadePorNome,
 		RequerAuth: false,
 	},
 	{
