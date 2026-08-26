@@ -1,34 +1,27 @@
 package controllers
 
 import (
-	"encoding/json"
 	"gobook/internal/auth"
 	"gobook/internal/database"
 	"gobook/internal/models"
 	"gobook/internal/repositories"
 	"gobook/internal/responses"
 	"gobook/internal/security"
-	"io"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 )
 
 func CriaUsuario(c *gin.Context) {
-	req, err := io.ReadAll(c.Request.Body)
-	if err != nil {
-		c.Status(http.StatusBadRequest)
-		return
-	}
-
 	var usuario models.Usuario
-	if err = json.Unmarshal(req, &usuario); err != nil {
+	if err := c.ShouldBindWith(&usuario, binding.JSON); err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err = usuario.Prepara(true); err != nil {
+	if err := usuario.Prepara(true); err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
@@ -46,25 +39,18 @@ func CriaUsuario(c *gin.Context) {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
 	}
-	defer c.Request.Body.Close()
 
 	c.Status(http.StatusOK)
 }
 
 func Login(c *gin.Context) {
-	req, err := io.ReadAll(c.Request.Body)
-	if err != nil {
-		responses.Err(c, http.StatusBadRequest, err)
-		return
-	}
-
 	var usuario models.Usuario
-	if err = json.Unmarshal(req, &usuario); err != nil {
+	if err := c.ShouldBindWith(&usuario, binding.JSON); err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
 
-	if err = usuario.Prepara(false); err != nil {
+	if err := usuario.Prepara(false); err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
@@ -88,7 +74,6 @@ func Login(c *gin.Context) {
 		responses.Err(c, http.StatusUnauthorized, err)
 		return
 	}
-	defer c.Request.Body.Close()
 
 	token, err := auth.CreateToken(uint64(userRetornado.ID), userRetornado.Role)
 	if err != nil {
@@ -102,7 +87,7 @@ func Login(c *gin.Context) {
 // BuscaPorID busca dados de um usuário pelo seu ID
 // Usa o parâmetro userID na URL.
 func BuscaPorID(c *gin.Context) {
-	ID := c.Request.URL.Query().Get("userID")
+	ID := c.Param("id")
 
 	userID, err := strconv.Atoi(ID)
 	if err != nil {

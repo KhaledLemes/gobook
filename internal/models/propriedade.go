@@ -23,3 +23,7 @@ type Propriedade struct {
 
 	Quartos []Quarto `json:"quartos"`
 }
+
+func (p *Propriedade) Valida() {
+
+}

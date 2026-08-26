@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"gobook/internal/config"
 	"gobook/internal/models"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
+	"github.com/gin-gonic/gin"
 )
 
 // CreateToken criaa o token. Permissions é um objeto do tipo mapclaims, que tem o payload do JWT
@@ -26,8 +26,8 @@ func CreateToken(userID uint64, role models.Role) (string, error) {
 	return token.SignedString([]byte(config.SecretKey))
 }
 
-func ValidadeToken(r *http.Request) error {
-	tokenString := extractToken(r)
+func ValidadeToken(c *gin.Context) error {
+	tokenString := extractToken(c)
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
 		return err
@@ -39,18 +39,17 @@ func ValidadeToken(r *http.Request) error {
 	return errors.New("Invalid token")
 }
 
-func ExtractUserID(r *http.Request) (uint64, error) {
-	tokenString := extractToken(r)
+func ExtractUserID(c *gin.Context) (uint64, error) {
+	tokenString := extractToken(c)
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
 		return 0, err
 	}
 
 	if permissions, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		fmt.Println("PARA DEBUG, DENTRO DE ExtractUserID:", permissions["userID"])
 		if permissions["userID"] == nil {
 			return 0, errors.New(
-				"UserID is a <nil> value. Please, revaluate your trash code or choose another career that does not demand writing code",
+				"userId está vazio",
 			)
 		}
 		userID, err := strconv.ParseUint(fmt.Sprintf("%.0f", permissions["userID"]), 10, 64)
@@ -61,13 +60,32 @@ func ExtractUserID(r *http.Request) (uint64, error) {
 		return userID, nil
 	}
 
-	return 0, errors.New("Invalid token")
+	return 0, errors.New("token inválido")
+}
+
+func ExtractUserRole(c *gin.Context) (string, error) {
+	tokenString := extractToken(c)
+	token, err := jwt.Parse(tokenString, returnVerificationKey)
+	if err != nil {
+		return "", err
+	}
+
+	if permissions, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if permissions["role"] == nil {
+			return "", errors.New(
+				"role está vazio",
+			)
+		}
+		role := fmt.Sprintf("%s", permissions["role"])
+		return role, nil
+	}
+
+	return "", errors.New("token inválido")
 }
 
 // extractToken extracts the token from header
-func extractToken(r *http.Request) string {
-	token := r.Header.Get("Authorization")
-
+func extractToken(c *gin.Context) string {
+	token := c.GetHeader("Authorization")
 	if len(strings.Split(token, " ")) == 2 {
 		return strings.Split(token, " ")[1]
 	}
@@ -79,7 +97,7 @@ func extractToken(r *http.Request) string {
 // Se conseguir fazer a conversão, significa que o method de assinatura está correto
 func returnVerificationKey(token *jwt.Token) (interface{}, error) {
 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-		return nil, fmt.Errorf("Unexpected signature method. %v", token.Header["alg"])
+		return nil, fmt.Errorf("método de assinatura inesperado. %v", token.Header["alg"])
 	}
 	return config.SecretKey, nil
 }

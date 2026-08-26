@@ -19,7 +19,7 @@ func Logger() gin.HandlerFunc {
 
 func Autentica() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if err := auth.ValidadeToken(c.Request); err != nil {
+		if err := auth.ValidadeToken(c); err != nil {
 			responses.Err(c, http.StatusUnauthorized, err)
 			return
 		}
