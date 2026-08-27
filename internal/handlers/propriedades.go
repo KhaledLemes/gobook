@@ -1,14 +1,14 @@
-package controllers
+package handlers
 
 import (
 	"errors"
-	"fmt"
 	"gobook/internal/auth"
 	"gobook/internal/database"
 	"gobook/internal/models"
 	"gobook/internal/repositories"
 	"gobook/internal/responses"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -92,6 +92,11 @@ func CriarPropriedade(c *gin.Context) {
 		return
 	}
 
+	if err = propriedade.Prepara(); err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+
 	db, err := database.Connect()
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
@@ -104,7 +109,6 @@ func CriarPropriedade(c *gin.Context) {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
-	fmt.Println(userID)
 
 	repo := repositories.NewPropriedadesRepo(db)
 	propriedadeNova, err := repo.CriaPropriedade(&propriedade, int(userID))
@@ -113,7 +117,7 @@ func CriarPropriedade(c *gin.Context) {
 		return
 	}
 
-	c.String(http.StatusOK, "%s publicada!", propriedadeNova)
+	c.String(http.StatusOK, "A propriedade %s foi publicada!", propriedadeNova)
 }
 
 func EditarPropriedade(c *gin.Context) {
@@ -122,4 +126,47 @@ func EditarPropriedade(c *gin.Context) {
 
 func DeletaPropriedadePorID(c *gin.Context) {
 
+	role, err := auth.ExtractUserRole(c)
+	if err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+	if role != "admin" && role != "owner" {
+		responses.Err(c, http.StatusForbidden, errors.New("você não tem autorização para executar essa ação"))
+	}
+
+	strPropID := c.Param("id")
+	propID, err := strconv.Atoi(strPropID)
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	userID, err := auth.ExtractUserID(c)
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	db, err := database.Connect()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repo := repositories.NewPropriedadesRepo(db)
+
+	propriedadeNome, err := repo.VerificaDono(propID, userID)
+	if err != nil {
+		responses.Err(c, http.StatusForbidden, err)
+		return
+	}
+
+	if err := repo.DeletaPropriedade(propID); err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	c.String(http.StatusOK, "A propriedade %s foi deletada com sucesso!", propriedadeNome)
 }

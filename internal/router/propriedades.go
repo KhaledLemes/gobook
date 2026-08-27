@@ -1,6 +1,6 @@
 package router
 
-import controller "gobook/internal/controllers"
+import controller "gobook/internal/handlers"
 
 var propriedadesRouter = []Route{
 	{

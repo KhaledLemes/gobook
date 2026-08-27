@@ -25,3 +25,13 @@
   "senha": "khaled13"
 
 }
+
+
+{
+  "nome": "pior lugar do mundo 2",
+  "descricao": "PIOR LUGAR DO MUNDO DE NOVO SE MATA",
+  "estado": "SP",
+  "cidade": "São Paulo",
+  "pet_friendly": true,
+  "categoria": "hotel"
+}

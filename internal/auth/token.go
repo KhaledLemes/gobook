@@ -39,7 +39,7 @@ func ValidadeToken(c *gin.Context) error {
 	return errors.New("Invalid token")
 }
 
-func ExtractUserID(c *gin.Context) (uint64, error) {
+func ExtractUserID(c *gin.Context) (int, error) {
 	tokenString := extractToken(c)
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExtractUserID(c *gin.Context) (uint64, error) {
 				"userId está vazio",
 			)
 		}
-		userID, err := strconv.ParseUint(fmt.Sprintf("%.0f", permissions["userID"]), 10, 64)
+		userID, err := strconv.Atoi(fmt.Sprintf("%.0f", permissions["userID"]))
 		if err != nil {
 			return 0, err
 		}

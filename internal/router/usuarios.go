@@ -1,7 +1,7 @@
 package router
 
 import (
-	controller "gobook/internal/controllers"
+	controller "gobook/internal/handlers"
 )
 
 var usersRoutes = []Route{
