@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"gobook/internal/auth"
 	"gobook/internal/database"
 	"gobook/internal/models"
@@ -121,28 +122,61 @@ func CriarPropriedade(c *gin.Context) {
 }
 
 func EditarPropriedade(c *gin.Context) {
-
-}
-
-func DeletaPropriedadePorID(c *gin.Context) {
-
-	role, err := auth.ExtractUserRole(c)
+	var propriedade models.Propriedade
+	userID, admin, err := auth.VerificaOwnerEAdmin(c)
 	if err != nil {
-		responses.Err(c, http.StatusBadRequest, err)
+		responses.Err(c, http.StatusForbidden, err)
 		return
-	}
-	if role != "admin" && role != "owner" {
-		responses.Err(c, http.StatusForbidden, errors.New("você não tem autorização para executar essa ação"))
 	}
 
 	strPropID := c.Param("id")
 	propID, err := strconv.Atoi(strPropID)
 	if err != nil {
-		responses.Err(c, http.StatusInternalServerError, err)
+		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
 
-	userID, err := auth.ExtractUserID(c)
+	if err := c.ShouldBindWith(&propriedade, binding.JSON); err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+	if err := propriedade.Prepara(); err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := database.Connect()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	fmt.Println(userID)
+	repo := repositories.NewPropriedadesRepo(db)
+	if !admin {
+		_, err = repo.VerificaDono(propID, userID)
+		if err != nil {
+			responses.Err(c, http.StatusForbidden, err)
+			return
+		}
+	}
+	if err = repo.EditaPropriedade(propriedade, propID); err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	c.String(http.StatusOK, "Sucesso na edição!")
+}
+
+func DeletaPropriedadePorID(c *gin.Context) {
+	userID, admin, err := auth.VerificaOwnerEAdmin(c)
+	if err != nil {
+		responses.Err(c, http.StatusUnauthorized, err)
+		return
+	}
+
+	strPropID := c.Param("id")
+	propID, err := strconv.Atoi(strPropID)
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
@@ -157,13 +191,23 @@ func DeletaPropriedadePorID(c *gin.Context) {
 
 	repo := repositories.NewPropriedadesRepo(db)
 
-	propriedadeNome, err := repo.VerificaDono(propID, userID)
-	if err != nil {
-		responses.Err(c, http.StatusForbidden, err)
-		return
+	// Verifica se é realmente o dono tentando apagar se não for um admin
+	var propriedadeNome string
+	if !admin {
+		propriedadeNome, err = repo.VerificaDono(propID, userID)
+		if err != nil {
+			responses.Err(c, http.StatusForbidden, err)
+			return
+		}
+	} else {
+		propriedadeNome, err = repo.RetornaNome(propID)
+		if err != nil {
+			responses.Err(c, http.StatusForbidden, err)
+			return
+		}
 	}
 
-	if err := repo.DeletaPropriedade(propID); err != nil {
+	if err = repo.DeletaPropriedade(propID); err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
 	}

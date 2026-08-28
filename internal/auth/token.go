@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"gobook/internal/config"
 	"gobook/internal/models"
+	"gobook/internal/responses"
+	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +14,28 @@ import (
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
+
+func VerificaOwnerEAdmin(c *gin.Context) (int, bool, error) {
+	admin := false
+	role, err := ExtractUserRole(c)
+	if err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return -1, false, err
+	}
+	if role != "admin" && role != "owner" {
+		responses.Err(c, http.StatusForbidden, errors.New("você não tem autorização para executar essa ação"))
+	} else if role == "admin" {
+		admin = true
+	}
+
+	userID, err := ExtractUserID(c)
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return -1, false, err
+	}
+
+	return userID, admin, nil
+}
 
 // CreateToken criaa o token. Permissions é um objeto do tipo mapclaims, que tem o payload do JWT
 // NewWithClaims efetivamente cria o token com a assinatura

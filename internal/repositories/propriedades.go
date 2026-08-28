@@ -3,6 +3,7 @@ package repositories
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"gobook/internal/models"
 )
 
@@ -47,8 +48,9 @@ func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Proprieda
 	var propriedade models.Propriedade
 	if rows.Next() {
 		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		return propriedade, nil
 	}
-	return propriedade, nil
+	return models.Propriedade{}, errors.New("propriedade inexistente")
 }
 
 func (r RepoPropriedades) BuscaPropriedadePorID(ID string) (models.Propriedade, error) {
@@ -86,7 +88,7 @@ func (r RepoPropriedades) CriaPropriedade(propriedade *models.Propriedade, donoI
 	return propriedade.Nome, nil
 }
 
-func (r RepoPropriedades) VerificaDono(propriedadeID, donoID int) (string, error) {
+func (r RepoPropriedades) VerificaDono(propriedadeID, userID int) (string, error) {
 	rows, err := r.db.Query(
 		"SELECT nome, dono_id FROM propriedades WHERE id = ?", propriedadeID,
 	)
@@ -100,13 +102,35 @@ func (r RepoPropriedades) VerificaDono(propriedadeID, donoID int) (string, error
 		nome       string
 	)
 	if rows.Next() {
-		rows.Scan(&nome, &donoPropID)
-		if donoPropID == donoID {
+		if err := rows.Scan(&nome, &donoPropID); err != nil {
+			return "", err
+		}
+		if donoPropID == userID {
 			return nome, nil
 		}
-		return "", errors.New("propriedade não existe ou você não pode acessá-la")
+		fmt.Println(userID, donoPropID)
+
+		return "", errors.New("a propriedade não existe ou você não tem permissão para acessá-la")
 	}
-	return "", rows.Err()
+	return "", errors.New("a query não trouxe nenhum resultado")
+}
+
+func (r RepoPropriedades) RetornaNome(propID int) (string, error) {
+	var nome string
+	rows, err := r.db.Query(
+		"SELECT nome FROM propriedades WHERE id = ?", propID,
+	)
+	if err != nil {
+		return "", nil
+	}
+	defer rows.Close()
+
+	if rows.Next() {
+		if err := rows.Scan(&nome); err != nil {
+			return "", err
+		}
+	}
+	return nome, nil
 }
 
 func (r RepoPropriedades) DeletaPropriedade(ID int) error {
@@ -117,24 +141,35 @@ func (r RepoPropriedades) DeletaPropriedade(ID int) error {
 		return err
 	}
 	defer stmt.Close()
-	if _, err := stmt.Exec(ID); err != nil {
+	sqlResponse, err := stmt.Exec(ID)
+	if err != nil {
 		return err
 	}
 	defer stmt.Close()
+
+	if rowsAff, _ := sqlResponse.RowsAffected(); rowsAff == 0 {
+		return errors.New("a propriedade não existe ou você não tem permissão para acessá-la")
+	}
+
 	return nil
 }
 
-func (r RepoPropriedades) EditaPropriedade(p *models.Propriedade, userID int) error {
+func (r RepoPropriedades) EditaPropriedade(p models.Propriedade, propID int) error {
 	stmt, err := r.db.Prepare(
-		"UPDATE propriedades SET nome = ?, descricao = ?, estado = ?, cidade = ?, pet_friendly = ?, categoria = ? WHERE id = ? AND dono_id = ?",
+		"UPDATE propriedades SET nome = ?, descricao = ?, estado = ?, cidade = ?, pet_friendly = ?, categoria = ? WHERE id = ?",
 	)
 	if err != nil {
 		return err
 	}
 	defer stmt.Close()
 
-	if _, err := stmt.Exec(p.Nome, p.Descricao, p.Estado, p.Cidade, p.PetFriendly, p.Categoria, p.ID, userID); err != nil {
+	sqlResponse, err := stmt.Exec(p.Nome, p.Descricao, p.Estado, p.Cidade, p.PetFriendly, p.Categoria, propID)
+	if err != nil {
 		return err
+	}
+
+	if rowsAff, _ := sqlResponse.RowsAffected(); rowsAff == 0 {
+		return errors.New("a propriedade não existe ou você não tem permissão para acessá-la")
 	}
 	return nil
 }
