@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/login.css">
+
+
+
+    <link rel="icon" href="/img/graduate-colorized.svg">
+</head>
+<body>
+
+{{ template "header.html" . }}
+
+<main class="main-content auth-area">
+    <div class="auth-card">
+        <h1 class="auth-title">Acesse sua conta</h1>
+        <p class="auth-subtitle">Entre para planejar suas próximas viagens ou anunciar propriedades.</p>
+
+        <form class="auth-form" action="/login" method="POST">
+            <div class="input-group-auth">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="nome@email.com" required>
+            </div>
+
+            <div class="input-group-auth">
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-auth">Entrar no GoBook</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Ainda não tem uma conta? <a href="#">Cadastre-se grátis</a></p>
+        </div>
+    </div>
+</main>
+
+
+{{ template "footer.html" . }}

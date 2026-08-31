@@ -35,11 +35,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const minCheckout = nextDay.toISOString().split('T')[0];
         checkoutInput.setAttribute('min', minCheckout);
 
-        // Se o usuário já tinha colocado um checkout inválido, limpa e força o mínimo
         if (checkoutInput.value && checkoutInput.value <= checkinInput.value) {
             checkoutInput.value = minCheckout;
         }
+        checkoutInput.addEventListener('change', () => {
+            if (checkinInput.value && checkoutInput.value <= checkinInput.value) {
+                checkoutInput.value = minCheckout;
+            }
+        })
     });
+
 });
 
 // --- Lógica dos Contadores de Hóspedes ---
@@ -52,8 +57,9 @@ window.updateGuest = function(type, change) {
     const newVal = guests[type] + change;
 
     // Regras de negócio: mínimo 1 adulto e mínimo 0 crianças
-    if (type === 'adult' && newVal < 1) return;
-    if (type === 'child' && newVal < 0) return;
+    if (guests.adult+guests.child >= 6 && change === 1) return;
+    if (type === 'adult' && newVal < 1 || newVal > 6) return;
+    if (type === 'child' && newVal < 0 || newVal > 6) return;
 
     guests[type] = newVal;
 

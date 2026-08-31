@@ -1,0 +1,198 @@
+:root {
+    --go-blue: #00ADD8;
+    --go-blue-dark: #0088AA;
+    --bg-color: #F7FBFC;
+    --text-color: #333333;
+    --text-muted: #666666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* ================= CABEÇALHO ================= */
+.header {
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem 5%;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--go-blue);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+/* Ações (Ícones e Botões) */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.contact-icon {
+    color: var(--go-blue-dark);
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.contact-icon:hover {
+    color: var(--go-blue);
+}
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--go-blue);
+    color: var(--go-blue);
+}
+
+.btn-outline:hover {
+    background: rgba(0, 173, 216, 0.1);
+}
+
+.btn-light {
+    background: var(--go-blue);
+    color: white;
+}
+
+.btn-light:hover {
+    background: var(--go-blue-dark);
+}
+
+.btn-primary {
+    background: var(--go-blue);
+    color: white;
+    font-size: 16px;
+}
+
+.btn-primary:hover {
+    background: var(--go-blue-dark);
+}
+
+/* ================= ÁREA PRINCIPAL ================= */
+
+
+/* ================= FORMULÁRIO DE LOGIN/CADASTRO ================= */
+.auth-area {
+    justify-content: center; /* Centraliza o cartão verticalmente na página */
+    align-items: center;     /* Centraliza o cartão horizontalmente */
+    padding: 2rem;
+}
+
+.auth-card {
+    background-color: #ffffff;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 173, 216, 0.08); /* Sombra suave com cor do Golang */
+    border-top: 6px solid var(--go-blue); /* Linha característica do topo */
+    width: 100%;
+    max-width: 450px;
+}
+
+.auth-title {
+    font-size: 2rem;
+    color: var(--go-blue-dark);
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.auth-subtitle {
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group-auth {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.input-group-auth label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.input-group-auth input {
+    padding: 12px 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    color: var(--text-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.input-group-auth input:focus {
+    border-color: var(--go-blue);
+    box-shadow: 0 0 0 3px rgba(0, 173, 216, 0.15); /* Efeito de brilho azul ao focar no campo */
+}
+
+.btn-auth {
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+.auth-footer {
+    margin-top: 2rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.auth-footer a {
+    color: var(--go-blue);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.auth-footer a:hover {
+    color: var(--go-blue-dark);
+    text-decoration: underline;
+}

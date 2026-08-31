@@ -37,14 +37,20 @@ body {
 }
 
 .logo {
+    display: flex;
+    align-items: center;    /* Centraliza verticalmente o ícone com o texto */
+    gap: 10px;              /* Espaço exato entre o ícone e o texto */
     font-size: 1.8rem;
     font-weight: 800;
     color: var(--go-blue);
     text-decoration: none;
-    display: flex;
-    align-items: center;
 }
 
+.logo-icon {
+    width: 40px;            /* Tamanho fixo para o SVG não estourar a linha */
+    height: 40px;
+    object-fit: contain;
+}
 /* Ações (Ícones e Botões) */
 .header-actions {
     display: flex;
@@ -94,12 +100,11 @@ body {
 
 /* ================= ÁREA PRINCIPAL ================= */
 .main-content {
-    flex: 1; /* Faz o main expandir para empurrar o footer para baixo */
+    flex: 1;
     display: flex;
     flex-direction: column;
     width: 100%;
 }
-
 /* ================= RODAPÉ ================= */
 .footer {
     background-color: #ffffff;
@@ -117,52 +122,3 @@ body {
 }
 
 /* ================= PÁGINA EM CONSTRUÇÃO (Novas regras) ================= */
-.construction-area {
-    justify-content: center; /* Centraliza verticalmente o conteúdo */
-    align-items: center;     /* Centraliza horizontalmente o conteúdo */
-    text-align: center;
-    padding: 2rem;
-}
-
-.construction-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    animation: bounce 2s infinite ease-in-out;
-}
-
-.construction-title {
-    font-size: 2.5rem;
-    color: var(--go-blue-dark);
-    margin-bottom: 1rem;
-}
-
-.construction-text {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-}
-
-/* Botão em formato de link âncora */
-.btn-construction {
-    padding: 12px 24px;
-    font-size: 1rem;
-    font-weight: 600;
-    text-decoration: none;
-    background-color: var(--go-blue);
-    color: #ffffff;
-    border-radius: 8px;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.btn-construction:hover {
-    background-color: var(--go-blue-dark);
-    transform: translateY(-2px); /* Efeito suave de levantar ao passar o mouse */
-}
-
-/* Animação do ícone */
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}

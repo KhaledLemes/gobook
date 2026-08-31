@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/construction.css">
+    <link rel="icon" href="/img/graduate-colorized.svg">
+</head>
+<body>
+
+{{ template "header.html" . }}
+
+<main class="main-content construction-area">
+    <div class="construction-icon">
+        <img src="/img/machine-colorized.svg" alt="Img gophers construindo" id="img-gophers-construcao">
+        Site em Construção
+    </div>
+    <p class="construction-text">Gophers estão preparando o melhor sistema de reservas de hotéis para você. Tenha dó deles, são somente esquilos.</p>
+
+    <a href="/home" class="btn-construction">
+        <span>Ir para site sendo construído</span>
+    </a>
+
+</main>
+
+{{ template "footer.html" . }}

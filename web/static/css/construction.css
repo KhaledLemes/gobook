@@ -1,0 +1,58 @@
+
+#img-gophers-construcao {
+    height: 256px;
+    width: 256px;
+}
+
+.construction-area {
+    justify-content: center; /* Centraliza verticalmente o conteúdo */
+    align-items: center;     /* Centraliza horizontalmente o conteúdo */
+    text-align: center;
+    padding: 2rem;
+}
+
+.construction-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce 2s infinite ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.construction-title {
+    font-size: 2.5rem;
+    color: var(--go-blue-dark);
+    margin-bottom: 1rem;
+}
+
+.construction-text {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+/* Botão em formato de link âncora */
+.btn-construction {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    background-color: var(--go-blue);
+    color: #ffffff;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-construction:hover {
+    background-color: var(--go-blue-dark);
+    transform: translateY(-2px); /* Efeito suave de levantar ao passar o mouse */
+}
+
+/* Animação do ícone */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}

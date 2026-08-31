@@ -17,7 +17,13 @@ type Route struct {
 func ConfigRouter(r *gin.Engine) *gin.Engine {
 	r.Use(middleware.Logger())
 
-	publicos := r.Group("/")
+	paginas := r.Group("/")
+	{
+		paginas.GET("/", controller.PaginaConstrucao)
+		paginas.GET("/home", controller.PaginaInicial)
+		paginas.GET("/login", controller.PaginaLogin)
+	}
+	publicos := r.Group("/api/v1")
 	{
 		publicos.POST("/login", controller.Login)
 
@@ -28,7 +34,7 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		publicos.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
 	}
 
-	protegidos := r.Group("/")
+	protegidos := r.Group("/api/v1")
 	protegidos.Use(middleware.Autentica())
 	{
 		protegidos.POST("/propriedades", controller.CriarPropriedade)
