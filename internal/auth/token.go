@@ -51,7 +51,10 @@ func CreateToken(userID uint64, role models.Role) (string, error) {
 }
 
 func ValidadeToken(c *gin.Context) error {
-	tokenString := extractToken(c)
+	tokenString, err := extractToken(c)
+	if err != nil {
+		return err
+	}
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
 		return err
@@ -60,11 +63,14 @@ func ValidadeToken(c *gin.Context) error {
 		return nil
 	}
 
-	return errors.New("Invalid token")
+	return errors.New("token inválido")
 }
 
 func ExtractUserID(c *gin.Context) (int, error) {
-	tokenString := extractToken(c)
+	tokenString, err := extractToken(c)
+	if err != nil {
+		return 0, err
+	}
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
 		return 0, err
@@ -88,7 +94,10 @@ func ExtractUserID(c *gin.Context) (int, error) {
 }
 
 func ExtractUserRole(c *gin.Context) (string, error) {
-	tokenString := extractToken(c)
+	tokenString, err := extractToken(c)
+	if err != nil {
+		return "", err
+	}
 	token, err := jwt.Parse(tokenString, returnVerificationKey)
 	if err != nil {
 		return "", err
@@ -108,13 +117,16 @@ func ExtractUserRole(c *gin.Context) (string, error) {
 }
 
 // extractToken extracts the token from header
-func extractToken(c *gin.Context) string {
-	token := c.GetHeader("Authorization")
+func extractToken(c *gin.Context) (string, error) {
+	token, err := c.Cookie("auth")
+	if err != nil {
+		return "", err
+	}
 	if len(strings.Split(token, " ")) == 2 {
-		return strings.Split(token, " ")[1]
+		return strings.Split(token, " ")[1], nil
 	}
 
-	return ""
+	return token, nil
 }
 
 // returnVerificationKey verifica o méthod de assinatura do token para ver se realmente é da família HMAC fazendo um Type Assertion

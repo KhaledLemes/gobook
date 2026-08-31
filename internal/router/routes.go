@@ -3,7 +3,9 @@ package router
 import (
 	controller "gobook/internal/handlers"
 	"gobook/internal/middleware"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,6 +18,16 @@ type Route struct {
 
 func ConfigRouter(r *gin.Engine) *gin.Engine {
 	r.Use(middleware.Logger())
+
+	// Permite testar na minha máquina pela porta :8081 sem bloqueio de CORS
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://127.0.0.1:8081"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Lenght", "Content-Type"},
+		AllowCredentials: true,
+		MaxAge:           24 * time.Hour,
+	}))
 
 	paginas := r.Group("/")
 	{

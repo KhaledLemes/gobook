@@ -25,3 +25,9 @@ func Autentica() gin.HandlerFunc {
 		}
 	}
 }
+
+func RespTypeJson() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Content-Type", "application/json")
+	}
+}

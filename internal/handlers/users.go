@@ -81,7 +81,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	c.Header("Authorization", token)
+	c.SetCookie("auth", token, 1850, "/", "", false, true)
 }
 
 // BuscaPorID busca dados de um usuário pelo seu ID
