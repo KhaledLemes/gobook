@@ -21,10 +21,10 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 
 	// Permite testar na minha máquina pela porta :8081 sem bloqueio de CORS
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://127.0.0.1:8081"},
+		AllowOrigins:     []string{"http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:8081", "http://127.0.0.1:8081"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
-		ExposeHeaders:    []string{"Content-Lenght", "Content-Type"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "Access-Control-Allow-Origin"},
+		ExposeHeaders:    []string{"Content-Lenght", "Content-Type", "Access-Control-Allow-Origin"},
 		AllowCredentials: true,
 		MaxAge:           24 * time.Hour,
 	}))
@@ -34,6 +34,8 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		paginas.GET("/", controller.PaginaConstrucao)
 		paginas.GET("/home", controller.PaginaInicial)
 		paginas.GET("/login", controller.PaginaLogin)
+		paginas.GET("/registro", controller.PaginaRegistro)
+
 	}
 	publicos := r.Group("/api/v1")
 	{

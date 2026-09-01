@@ -22,3 +22,10 @@ func PaginaInicial(c *gin.Context) {
 	}
 	c.HTML(200, "home.html", data)
 }
+
+func PaginaRegistro(c *gin.Context) {
+	data := gin.H{
+		"title": "Gobook - Registro",
+	}
+	c.HTML(200, "registro.html", data)
+}

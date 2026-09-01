@@ -68,14 +68,18 @@ func (u *Usuario) validar(SeRegistrando bool) error {
 		return errors.New("o campo de e-mail é mandatório")
 	}
 
-	if err := u.validaNascimento(); err != nil {
+	if SeRegistrando && u.Role != "guest" && u.Role != "owner" {
+		return errors.New("tipo de usuário inválido")
+	}
+
+	if err := u.validaNascimento(); SeRegistrando && err != nil {
 		return err
 	}
 	if err := checkmail.ValidateFormat(u.Email); err != nil {
 		return errors.New("formato do e-mail inválido")
 	}
 
-	if SeRegistrando && u.Senha == "" {
+	if u.Senha == "" {
 		return errors.New("A senha é um campo obrigatório")
 	}
 

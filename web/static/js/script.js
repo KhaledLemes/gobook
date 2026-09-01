@@ -67,3 +67,4 @@ window.updateGuest = function(type, change) {
     document.getElementById(`${type}Val`).innerText = guests[type];
     document.getElementById(`${type}CountDisplay`).innerText = guests[type];
 };
+

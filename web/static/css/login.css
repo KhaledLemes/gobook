@@ -104,6 +104,10 @@ body {
 
 /* ================= ÁREA PRINCIPAL ================= */
 
+#login-err-cont {
+    width: 100%;
+    text-align: center;
+}
 
 /* ================= FORMULÁRIO DE LOGIN/CADASTRO ================= */
 .auth-area {
