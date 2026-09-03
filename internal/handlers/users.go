@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"gobook/internal/auth"
 	"gobook/internal/database"
 	"gobook/internal/models"
@@ -9,6 +10,7 @@ import (
 	"gobook/internal/security"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -17,6 +19,10 @@ import (
 func CriaUsuario(c *gin.Context) {
 	var usuario models.Usuario
 	if err := c.ShouldBindWith(&usuario, binding.JSON); err != nil {
+		if strings.Contains(err.Error(), "parsing time") {
+			responses.Err(c, http.StatusBadRequest, errors.New("sim, eu coloquei verificação no backend... a data de nascimento está incorreta, deve seguir formato ISO 8601"))
+			return
+		}
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
@@ -74,6 +80,7 @@ func Login(c *gin.Context) {
 		responses.Err(c, http.StatusUnauthorized, err)
 		return
 	}
+	usuario.Senha = ""
 
 	token, err := auth.CreateToken(uint64(userRetornado.ID), userRetornado.Role)
 	if err != nil {

@@ -1,5 +1,8 @@
-function getRole() {
-    return document.querySelector('input[name="tipo_conta"]:checked').value
+function getValue(el, porId) {
+    if (porId) {
+        return document.getElementById(el).value
+    }
+    return document.querySelector(el).value
 }
 
 document.addEventListener('DOMContentLoaded', (e) => {
@@ -46,7 +49,6 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
 
     btnFinish.addEventListener('click', async (e) => {
-        console.log(roleSelecionado.value)
 
         e.preventDefault()
         const formatedDate = new Date(nascimento.value).toISOString()
@@ -59,8 +61,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
                 "nome_meio": nomeUltimo.value,
                 "nome_ultimo": nomeMeio.value,
                 "nascimento": formatedDate,
-                "tel": tel.value,
-                "role": getRole()
+                "tel": getValue('tel', true),
+                "role": getValue('input[name="tipo_conta"]:checked', false)
             })
         })
     });

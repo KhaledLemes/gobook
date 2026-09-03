@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"slices"
 	"strings"
 )
 
@@ -44,17 +45,32 @@ func (p *Propriedade) valida() error {
 	if p.Nome == "" {
 		return errors.New("o nome é mandatório")
 	}
+	if len(p.Nome) < 6 {
+		return errors.New("o nome da propriedade deve ter pelo menos 5 caracteres")
+	}
+
 	if p.Descricao == "" {
 		return errors.New("a descrição é mandatória")
+	}
+	if len(p.Descricao) < 30 {
+		return errors.New("a descrição da propriedade deve ter pelo menos 30 caracteres")
 	}
 	if p.Estado == "" {
 		return errors.New("o estado é mandatório")
 	}
+
+	if ok := slices.Contains(EstadosBrasil, p.Estado); !ok {
+		return errors.New("estado inválido")
+	}
+
 	if p.Cidade == "" {
 		return errors.New("a cidade é mandatória")
 	}
 	if p.Categoria == "" {
-		return errors.New("o categoria é mandatória")
+		return errors.New("a categoria é mandatória")
+	}
+	if ok := slices.Contains(Categorias, p.Categoria); !ok {
+		return errors.New("a categoria é é inválida")
 	}
 
 	return nil
