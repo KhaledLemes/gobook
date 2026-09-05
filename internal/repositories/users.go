@@ -53,7 +53,7 @@ func (r RepoUsuarios) ProcurarPorEmail(email string) (models.Usuario, error) {
 		}
 		return usuario, nil
 	}
-	return models.Usuario{}, errors.New("Usuário não encontrado. Verifique as credenciais e tente novamente")
+	return models.Usuario{}, errors.New("e-mail não existe no banco de dados")
 }
 
 func (r RepoUsuarios) ProcuraPorID(ID int) (models.Usuario, error) {

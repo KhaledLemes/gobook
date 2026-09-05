@@ -1,14 +1,15 @@
 package handlers
 
 import (
-	"errors"
 	"fmt"
 	"gobook/internal/auth"
 	"gobook/internal/database"
+	"gobook/internal/handlers/erros"
 	"gobook/internal/models"
 	"gobook/internal/repositories"
 	"gobook/internal/responses"
 	"gobook/internal/security"
+	"gobook/utils"
 	"net/http"
 	"strconv"
 	"strings"
@@ -21,7 +22,7 @@ func CriaUsuario(c *gin.Context) {
 	var usuario models.Usuario
 	if err := c.ShouldBindWith(&usuario, binding.JSON); err != nil {
 		if strings.Contains(err.Error(), "parsing time") {
-			responses.Err(c, http.StatusBadRequest, errors.New("sim, eu coloquei verificação no backend... a data de nascimento está incorreta, deve seguir formato ISO 8601"))
+			responses.Err(c, http.StatusBadRequest, erros.ErrDataNascInvalida)
 			return
 		}
 		responses.Err(c, http.StatusBadRequest, err)
@@ -71,12 +72,20 @@ func Login(c *gin.Context) {
 	repo := repositories.NewUsuariosRepo(db)
 	userRetornado, err := repo.ProcurarPorEmail(usuario.Email)
 	if err != nil {
+		if utils.VerificaErro(err, "não existe no banco de dados") {
+			responses.Err(c, http.StatusInternalServerError, erros.ErrCredenciaisInvalidas)
+			return
+		}
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
 	}
 
 	err = security.Compare(userRetornado.Senha, usuario.Senha)
 	if err != nil {
+		if utils.VerificaErro(err, "is not the hash of the given password") {
+			responses.Err(c, http.StatusUnauthorized, erros.ErrCredenciaisInvalidas)
+			return
+		}
 		responses.Err(c, http.StatusUnauthorized, err)
 		return
 	}

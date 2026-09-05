@@ -7,15 +7,16 @@
 }
 
 .btn-logout {
-    background-color: transparent;
-    color: var(--text-muted);
+    background-color: var(--go-blue-dark);
+    color: #ffffff;
+
     border: 1px solid transparent;
-    margin-left: 15px;
+    margin-left: 25px;
     font-size: 0.9rem;
 }
 
 .btn-logout:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: rgba(0, 0, 0, 0.50);
     color: #d32f2f; /* Um vermelho elegante e sutil, padrão de UX para log-out */
 }
 
