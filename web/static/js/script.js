@@ -1,3 +1,6 @@
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Lógica do Dropdown de Hóspedes ---
     const guestsToggle = document.getElementById('guestsToggle');

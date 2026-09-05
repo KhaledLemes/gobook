@@ -54,6 +54,8 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		protegidos.POST("/propriedades", controller.CriarPropriedade)
 		protegidos.PUT("/propriedades/:id", controller.EditarPropriedade)
 		protegidos.DELETE("/propriedades/:id", controller.DeletaPropriedadePorID)
+		protegidos.GET("/me", controller.Me)
+		protegidos.GET("/logout", controller.Logout)
 	}
 	return r
 }

@@ -1,3 +1,8 @@
+let stp1err = document.getElementById('stp1-err')
+let stp2err = document.getElementById('stp2-err')
+
+
+
 function getValue(el, porId) {
     if (porId) {
         return document.getElementById(el).value
@@ -16,14 +21,8 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
     const email = document.getElementById('email');
     const senha = document.getElementById('senha');
-    const nome = document.getElementById('nome');
-    const nomeMeio = document.getElementById('nome_meio');
-    const nomeUltimo = document.getElementById('nome_ultimo');
     const nascimento = document.getElementById('nascimento');
-    const tel = document.getElementById('tel');
 
-
-    const stp1err = document.getElementById('stp1-err')
     stp1err.style.color = "red"
 
     btnNext.addEventListener('click', (e) => {
@@ -55,16 +54,37 @@ document.addEventListener('DOMContentLoaded', (e) => {
         const req = await fetch("/api/v1/usuarios", {
             method: 'POST',
             body: JSON.stringify({
-                "email": email.value,
-                "senha": senha.value,
-                "nome": nome.value,
-                "nome_meio": nomeUltimo.value,
-                "nome_ultimo": nomeMeio.value,
+                "email": getValue('email', true),
+                "senha": getValue('senha', true),
+                "nome": getValue('nome', true),
+                "nome_meio": getValue('nome_meio', true),
+                "nome_ultimo": getValue('nome_ultimo', true),
                 "nascimento": formatedDate,
                 "tel": getValue('tel', true),
                 "role": getValue('input[name="tipo_conta"]:checked', false)
             })
         })
+
+        if (req.status !== 200) {
+            const data = await req.json()
+            stp2err.style.color = 'red'
+            stp2err.innerText = data.error
+        } else {
+            const log = await fetch("/api/v1/login", {
+                body: JSON.stringify({
+                    "email": getValue('email', true),
+                    "senha": getValue('senha', true)
+                }),
+                method: 'POST',
+            })
+            if (log.status === 200) {
+                window.location.replace("/home")
+            } else {
+                stp2err.style.color = 'green'
+                stp2err.innerText = "Você conseguiu se registrar mas houve uma falha ao fazer o seu login. Volte para a página inicial e tente fazer login com as credenciais cadastradas"
+            }
+        }
     });
+
 
 });

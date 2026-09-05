@@ -77,6 +77,15 @@ body {
     text-align: center;
 }
 
+#stp2-err-cont {
+    width: 100%;
+    text-align: center;
+}
+
+#stp2-err {
+
+}
+
 /* ================= SELEÇÃO DE TIPO DE CONTA (Role) ================= */
 .role-selection {
     background-color: var(--bg-color); /* Fundo sutil do projeto */

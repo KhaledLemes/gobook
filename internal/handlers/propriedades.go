@@ -78,7 +78,7 @@ func BuscaPropriedadePorID(c *gin.Context) {
 }
 
 func CriarPropriedade(c *gin.Context) {
-	role, err := auth.ExtractUserRole(c)
+	role, err := auth.PegarRoleUsuario(c)
 	if err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
@@ -105,7 +105,7 @@ func CriarPropriedade(c *gin.Context) {
 	}
 	defer db.Close()
 
-	userID, err := auth.ExtractUserID(c)
+	userID, err := auth.PegarIDUsuario(c)
 	if err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return

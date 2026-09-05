@@ -6,6 +6,7 @@ import (
 	"gobook/internal/config"
 	"gobook/internal/models"
 	"gobook/internal/responses"
+	"gobook/utils"
 	"net/http"
 	"strconv"
 	"strings"
@@ -17,7 +18,7 @@ import (
 
 func VerificaOwnerEAdmin(c *gin.Context) (int, bool, error) {
 	admin := false
-	role, err := ExtractUserRole(c)
+	role, err := PegarRoleUsuario(c)
 	if err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return -1, false, err
@@ -28,7 +29,7 @@ func VerificaOwnerEAdmin(c *gin.Context) (int, bool, error) {
 		admin = true
 	}
 
-	userID, err := ExtractUserID(c)
+	userID, err := PegarIDUsuario(c)
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return -1, false, err
@@ -37,25 +38,26 @@ func VerificaOwnerEAdmin(c *gin.Context) (int, bool, error) {
 	return userID, admin, nil
 }
 
-// CreateToken criaa o token. Permissions é um objeto do tipo mapclaims, que tem o payload do JWT
+// CriarToken criaa o token. Permissions é um objeto do tipo mapclaims, que tem o payload do JWT
 // NewWithClaims efetivamente cria o token com a assinatura
-func CreateToken(userID uint64, role models.Role) (string, error) {
+func CriarToken(userID uint64, role models.Role, nome string) (string, error) {
 	permissions := jwt.MapClaims{}
 	permissions["authorized"] = true
 	permissions["exp"] = time.Now().Add(time.Minute * 30).Unix()
 	permissions["userID"] = userID
 	permissions["role"] = role
+	permissions["nome"] = nome
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, permissions)
 	return token.SignedString([]byte(config.SecretKey))
 }
 
 func ValidadeToken(c *gin.Context) error {
-	tokenString, err := extractToken(c)
+	tokenString, err := extrairToken(c)
 	if err != nil {
 		return err
 	}
-	token, err := jwt.Parse(tokenString, returnVerificationKey)
+	token, err := jwt.Parse(tokenString, chaveDeVerificacao)
 	if err != nil {
 		return err
 	}
@@ -66,12 +68,12 @@ func ValidadeToken(c *gin.Context) error {
 	return errors.New("token inválido")
 }
 
-func ExtractUserID(c *gin.Context) (int, error) {
-	tokenString, err := extractToken(c)
+func PegarIDUsuario(c *gin.Context) (int, error) {
+	tokenString, err := extrairToken(c)
 	if err != nil {
 		return 0, err
 	}
-	token, err := jwt.Parse(tokenString, returnVerificationKey)
+	token, err := jwt.Parse(tokenString, chaveDeVerificacao)
 	if err != nil {
 		return 0, err
 	}
@@ -93,12 +95,12 @@ func ExtractUserID(c *gin.Context) (int, error) {
 	return 0, errors.New("token inválido")
 }
 
-func ExtractUserRole(c *gin.Context) (string, error) {
-	tokenString, err := extractToken(c)
+func PegarRoleUsuario(c *gin.Context) (string, error) {
+	tokenString, err := extrairToken(c)
 	if err != nil {
 		return "", err
 	}
-	token, err := jwt.Parse(tokenString, returnVerificationKey)
+	token, err := jwt.Parse(tokenString, chaveDeVerificacao)
 	if err != nil {
 		return "", err
 	}
@@ -116,10 +118,36 @@ func ExtractUserRole(c *gin.Context) (string, error) {
 	return "", errors.New("token inválido")
 }
 
-// extractToken extracts the token from header
-func extractToken(c *gin.Context) (string, error) {
+func PegarNomeUsuario(c *gin.Context) (string, error) {
+	tokenString, err := extrairToken(c)
+	if err != nil {
+		return "", err
+	}
+	token, err := jwt.Parse(tokenString, chaveDeVerificacao)
+	if err != nil {
+		return "", err
+	}
+
+	if permissions, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		if permissions["nome"] == nil {
+			return "", errors.New(
+				"sem nome",
+			)
+		}
+		nome := fmt.Sprintf("%s", permissions["nome"])
+		return nome, nil
+	}
+
+	return "", errors.New("token inválido")
+}
+
+// extrairToken extracts the token from header
+func extrairToken(c *gin.Context) (string, error) {
 	token, err := c.Cookie("auth")
 	if err != nil {
+		if utils.VerificaErro(err, "named cookie not present") {
+			return "", errors.New("usuário não autenticado")
+		}
 		return "", err
 	}
 	if len(strings.Split(token, " ")) == 2 {
@@ -129,9 +157,9 @@ func extractToken(c *gin.Context) (string, error) {
 	return token, nil
 }
 
-// returnVerificationKey verifica o méthod de assinatura do token para ver se realmente é da família HMAC fazendo um Type Assertion
+// chaveDeVerificacao verifica o méthod de assinatura do token para ver se realmente é da família HMAC fazendo um Type Assertion
 // Se conseguir fazer a conversão, significa que o method de assinatura está correto
-func returnVerificationKey(token *jwt.Token) (interface{}, error) {
+func chaveDeVerificacao(token *jwt.Token) (interface{}, error) {
 	if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 		return nil, fmt.Errorf("método de assinatura inesperado. %v", token.Header["alg"])
 	}

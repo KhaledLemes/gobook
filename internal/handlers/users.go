@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"errors"
+	"fmt"
 	"gobook/internal/auth"
 	"gobook/internal/database"
 	"gobook/internal/models"
@@ -60,7 +61,6 @@ func Login(c *gin.Context) {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
-
 	db, err := database.Connect()
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
@@ -82,7 +82,8 @@ func Login(c *gin.Context) {
 	}
 	usuario.Senha = ""
 
-	token, err := auth.CreateToken(uint64(userRetornado.ID), userRetornado.Role)
+	fmt.Println(usuario.Nome)
+	token, err := auth.CriarToken(uint64(userRetornado.ID), userRetornado.Role, userRetornado.Nome)
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
@@ -90,6 +91,10 @@ func Login(c *gin.Context) {
 
 	c.SetCookie("auth", token, 0, "/", "", false, true)
 	c.Status(http.StatusOK)
+}
+
+func Logout(c *gin.Context) {
+	c.SetCookie("auth", "out", -1, "/", "", false, true)
 }
 
 // BuscaPorID busca dados de um usuário pelo seu ID
@@ -116,6 +121,17 @@ func BuscaPorID(c *gin.Context) {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
 	}
-
 	c.IndentedJSON(http.StatusOK, usuario)
+}
+
+func Me(c *gin.Context) {
+	nome, err := auth.PegarNomeUsuario(c)
+
+	if err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+	responses.JSON(c, http.StatusOK, struct {
+		Nome string `json:"nome"`
+	}{Nome: nome})
 }

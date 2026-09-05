@@ -1,5 +1,7 @@
-
 <header class="header">
+
+    <script src="/js/api.js"></script>
+
     <div class="header-container">
         <a class="logo" href="/home">
             <img class="logo-icon" src="/img/happy.svg" alt="Gopher feliz (logo GoBook)"></img>
@@ -8,13 +10,27 @@
 
         <div class="header-actions">
             <a href="#" class="contact-icon" title="Atendimento">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" color="white">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                 </svg>
             </a>
             <a href="/anunciar"><button class="btn btn-outline">Anunciar propriedade</button></a>
-            <a href="/registro"><button class="btn btn-light">Cadastre-se</button></a>
-            <a href="/login"><button class="btn btn-light">Login</button></a>
+
+            <!-- Agrupamento para visitantes (herda o mesmo gap para não quebrar o layout) -->
+            <div id="botoes-visitante" style="display: none; gap: 20px;">
+                <a href="/registro"><button class="btn btn-light">Cadastre-se</button></a>
+                <a href="/login"><button class="btn btn-light">Login</button></a>
+            </div>
+
+            <!-- Foto de perfil para logados (escondida por padrão) -->
+            <div id="area-logado" style="display: none; align-items: center;">
+                <a href="/perfil" title="Acessar meu perfil" id="anc-logado">
+                    <!-- O onerror substitui a foto por um placeholder caso o link quebre -->
+                    <img id="foto-perfil" src="/img/our-first-version-of-a-greg-the-go-gopher-plushie-dont-v0-b9ytw7dsdzx31.webp" alt="Foto de perfil" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid var(--go-blue); cursor: pointer;" onerror="this.onerror=null; this.src='/img/avatar-default.png';">
+                    <p id="nome-usuario"></p>
+                </a>
+                <button id="logout" class="btn btn-logout">Sair</button>
+            </div>
         </div>
     </div>
 </header>

@@ -6,6 +6,7 @@ import (
 	"slices"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"gobook/internal/security"
 
@@ -82,7 +83,9 @@ func (u *Usuario) validar(SeRegistrando bool) error {
 		}
 
 		if ok, err := regexp.Match(rexNome, []byte(u.NomeMeio)); !ok || err != nil {
-			return errors.New("revise o nome do meio e tente novamente")
+			if u.NomeMeio != "" {
+				return errors.New("revise o nome do meio e tente novamente")
+			}
 		}
 
 		if u.NomeUltimo == "" {
@@ -120,6 +123,11 @@ func (u *Usuario) formatar(SeRegistrando bool) error {
 	u.NomeMeio = strings.ToLower(u.NomeMeio)
 	u.NomeUltimo = strings.ToLower(u.NomeUltimo)
 	u.Email = strings.ToLower(u.Email)
+
+	u.Nome = primeiraLetraToUpper(u.Nome)
+	u.NomeMeio = primeiraLetraToUpper(u.NomeMeio)
+	u.NomeUltimo = primeiraLetraToUpper(u.NomeUltimo)
+
 
 	if SeRegistrando {
 		senhaHash, err := security.Hash(u.Senha)
@@ -179,4 +187,9 @@ func validaSenha(ps []byte) error {
 func especial(n byte) bool {
 	var lista = []byte{33, 35, 36, 37, 38, 42, 43, 45, 46, 63, 64}
 	return slices.Contains(lista, n)
+}
+
+func primeiraLetraToUpper(s string) string {
+	primeira, size := utf8.DecodeRuneInString(s)
+	return strings.ToUpper(string(primeira)) + s[size:]
 }

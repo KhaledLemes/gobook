@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 	_ "gobook/internal/database"
 	models "gobook/internal/models"
 )
@@ -40,18 +41,19 @@ func (r RepoUsuarios) CriarNovoUsuario(usuario models.Usuario) (int, error) {
 // ProcurarPorEmail retorna ID e senha do usuário procurado para que posteriormente seja comparado com a senha do DB.
 // O ID servirá posteriormente para token jwt
 func (r RepoUsuarios) ProcurarPorEmail(email string) (models.Usuario, error) {
-	rows, err := r.db.Query("SELECT id, senha, role FROM usuarios WHERE email= ?;", email)
+	rows, err := r.db.Query("SELECT id, senha, role, nome FROM usuarios WHERE email = ?", email)
 	if err != nil {
 		return models.Usuario{}, err
 	}
 	defer rows.Close()
 	var usuario models.Usuario
 	if rows.Next() {
-		if err := rows.Scan(&usuario.ID, &usuario.Senha, &usuario.Role); err != nil {
+		if err := rows.Scan(&usuario.ID, &usuario.Senha, &usuario.Role, &usuario.Nome); err != nil {
 			return models.Usuario{}, err
 		}
+		return usuario, nil
 	}
-	return usuario, nil
+	return models.Usuario{}, errors.New("Usuário não encontrado. Verifique as credenciais e tente novamente")
 }
 
 func (r RepoUsuarios) ProcuraPorID(ID int) (models.Usuario, error) {
