@@ -3,6 +3,7 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"gobook/internal/auth/erros"
 	"gobook/internal/config"
 	"gobook/internal/models"
 	"gobook/internal/responses"
@@ -43,7 +44,7 @@ func VerificaOwnerEAdmin(c *gin.Context) (int, bool, error) {
 func CriarToken(userID uint64, role models.Role, nome string) (string, error) {
 	permissions := jwt.MapClaims{}
 	permissions["authorized"] = true
-	permissions["exp"] = time.Now().Add(time.Minute * 30).Unix()
+	permissions["exp"] = time.Now().Add(time.Hour * 1).Unix()
 	permissions["userID"] = userID
 	permissions["role"] = role
 	permissions["nome"] = nome
@@ -59,13 +60,17 @@ func ValidadeToken(c *gin.Context) error {
 	}
 	token, err := jwt.Parse(tokenString, chaveDeVerificacao)
 	if err != nil {
+		if utils.VerificaErro(err, "expired") {
+			c.SetCookie("auth", "", -1, "/", "", false, true)
+			return erros.ErrSessaoExpirada
+		}
 		return err
 	}
 	if _, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return nil
 	}
 
-	return errors.New("token inválido")
+	return erros.ErrTknInvalido
 }
 
 func PegarIDUsuario(c *gin.Context) (int, error) {

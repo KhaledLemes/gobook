@@ -59,7 +59,8 @@ func (p *Propriedade) valida() error {
 		return errors.New("o estado é mandatório")
 	}
 
-	if ok := slices.Contains(EstadosBrasil, p.Estado); !ok {
+	p.Estado = strings.ToUpper(strings.TrimSpace(p.Estado))
+	if ok := slices.Contains(UFsBrasil, p.Estado); !ok {
 		return errors.New("estado inválido")
 	}
 
@@ -69,6 +70,8 @@ func (p *Propriedade) valida() error {
 	if p.Categoria == "" {
 		return errors.New("a categoria é mandatória")
 	}
+	catStr := strings.ToLower(strings.TrimSpace(string(p.Categoria)))
+	p.Categoria = Categoria(catStr)
 	if ok := slices.Contains(Categorias, p.Categoria); !ok {
 		return errors.New("a categoria é é inválida")
 	}
@@ -79,7 +82,6 @@ func (p *Propriedade) valida() error {
 func (p *Propriedade) formata() error {
 	p.Nome = strings.TrimSpace(p.Nome)
 	p.Descricao = strings.TrimSpace(p.Descricao)
-	p.Estado = strings.TrimSpace(p.Estado)
 	p.Cidade = strings.TrimSpace(p.Cidade)
 	return nil
 }

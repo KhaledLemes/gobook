@@ -8,6 +8,7 @@ import (
 	"gobook/internal/models"
 	"gobook/internal/repositories"
 	"gobook/internal/responses"
+	"gobook/utils"
 	"net/http"
 	"strconv"
 
@@ -27,6 +28,32 @@ func MostraTodasPropriedades(c *gin.Context) {
 
 	repo := repositories.NewPropriedadesRepo(db)
 	propriedades, err = repo.BuscarTodasPropriedades()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, propriedades)
+}
+
+func BuscarTodasPorDono(c *gin.Context) {
+	var propriedades []models.Propriedade
+
+	db, err := database.Connect()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	userID, err := auth.PegarIDUsuario(c)
+	if err != nil {
+		responses.Err(c, http.StatusForbidden, err)
+		return
+	}
+
+	repo := repositories.NewPropriedadesRepo(db)
+	propriedades, err = repo.BuscarTodasPorDono(userID)
 	if err != nil {
 		responses.Err(c, http.StatusInternalServerError, err)
 		return
@@ -112,13 +139,18 @@ func CriarPropriedade(c *gin.Context) {
 	}
 
 	repo := repositories.NewPropriedadesRepo(db)
-	propriedadeNova, err := repo.CriaPropriedade(&propriedade, int(userID))
+	_, err = repo.CriaPropriedade(&propriedade, int(userID))
 	if err != nil {
+		if utils.VerificaErro(err, "Duplicate entry") {
+			msg := fmt.Sprintf("propriedade chamada %s já existe", propriedade.Nome)
+			responses.Err(c, http.StatusBadRequest, errors.New(msg))
+			return
+		}
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
 
-	c.String(http.StatusOK, "A propriedade %s foi publicada!", propriedadeNova)
+	c.Status(http.StatusOK)
 }
 
 func EditarPropriedade(c *gin.Context) {

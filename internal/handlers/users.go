@@ -135,12 +135,20 @@ func BuscaPorID(c *gin.Context) {
 
 func Me(c *gin.Context) {
 	nome, err := auth.PegarNomeUsuario(c)
-
 	if err != nil {
-		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
+
+	role, err := auth.PegarRoleUsuario(c)
+	if err != nil {
+		return
+	}
+
 	responses.JSON(c, http.StatusOK, struct {
 		Nome string `json:"nome"`
-	}{Nome: nome})
+		Role string `json:"role"`
+	}{
+		Nome: nome,
+		Role: role,
+	})
 }

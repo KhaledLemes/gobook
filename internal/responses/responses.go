@@ -27,6 +27,12 @@ func Err(c *gin.Context, statusCode int, err error) {
 
 }
 
+func ErrHTML(c *gin.Context, code int, path string, err error) {
+	c.HTML(code, path, nil)
+	Err(c, code, err)
+	c.AbortWithStatus(code)
+}
+
 func primeiraToUpper(s string) string {
 	primeira, size := utf8.DecodeRuneInString(s)
 	return strings.ToUpper(string(primeira)) + s[size:]

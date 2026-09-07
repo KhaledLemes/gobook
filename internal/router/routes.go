@@ -29,34 +29,57 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		MaxAge:           24 * time.Hour,
 	}))
 
-	paginas := r.Group("/")
+	paginasPublicas := r.Group("/")
 	{
-		paginas.GET("/", controller.PaginaConstrucao)
-		paginas.GET("/home", controller.PaginaInicial)
-		paginas.GET("/login", controller.PaginaLogin)
-		paginas.GET("/registro", controller.PaginaRegistro)
+		paginasPublicas.GET("/", controller.PaginaConstrucao)
+		paginasPublicas.GET("/home", controller.PaginaInicial)
+		paginasPublicas.GET("/login", controller.PaginaLogin)
+		paginasPublicas.GET("/registro", controller.PaginaRegistro)
 
-	}
-	publicos := r.Group("/api/v1")
-	{
-		publicos.POST("/login", controller.Login)
-
-		publicos.POST("/usuarios", controller.CriaUsuario)
-
-		publicos.GET("/propriedades", controller.MostraTodasPropriedades)
-		publicos.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
-		publicos.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
+		paginasPublicas.GET("/unauthorized", controller.Unauthorized)
 	}
 
-	protegidos := r.Group("/api/v1")
-	protegidos.Use(middleware.Autentica())
+	paginasProprietarios := r.Group("/propriedades")
+	paginasProprietarios.Use(middleware.AutenticaProprietario())
 	{
-		protegidos.POST("/propriedades", controller.CriarPropriedade)
-		protegidos.PUT("/propriedades/:id", controller.EditarPropriedade)
-		protegidos.DELETE("/propriedades/:id", controller.DeletaPropriedadePorID)
-		protegidos.GET("/me", controller.Me)
-		protegidos.GET("/logout", controller.Logout)
+		paginasProprietarios.GET("/minhas", controller.PaginaOwner)
+		paginasProprietarios.GET("/nova", controller.PaginaCriarPropriedade)
+		paginasProprietarios.GET("/editar", controller.PaginaOwner)
+		paginasProprietarios.GET("/excluir", controller.PaginaOwner)
+
 	}
+	paginasAdmin := r.Group("/admin")
+	paginasAdmin.Use(middleware.AutenticaAdmin())
+	{
+		paginasAdmin.GET("painel", controller.PainelAdmin)
+	}
+
+	rotasPublicas := r.Group("/api/v1")
+	{
+		rotasPublicas.POST("/login", controller.Login)
+
+		rotasPublicas.POST("/usuarios", controller.CriaUsuario)
+
+		rotasPublicas.GET("/propriedades", controller.MostraTodasPropriedades)
+		rotasPublicas.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
+		rotasPublicas.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
+
+	}
+
+	rotasProtegidas := r.Group("/api/v1")
+	rotasProtegidas.Use(middleware.Autentica())
+	{
+		rotasProtegidas.POST("/propriedades", controller.CriarPropriedade)
+		rotasProtegidas.PUT("/propriedades/:id", controller.EditarPropriedade)
+		rotasProtegidas.DELETE("/propriedades/:id", controller.DeletaPropriedadePorID)
+		rotasProtegidas.GET("/propriedades/minhas", controller.BuscarTodasPorDono)
+
+		
+		rotasProtegidas.GET("/me", controller.Me)
+		rotasProtegidas.GET("/logout", controller.Logout)
+
+	}
+
 	return r
 }
 

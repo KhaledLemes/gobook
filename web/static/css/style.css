@@ -118,9 +118,18 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    text-decoration: none;
 
+    text-align: center;
     gap: 5px;
+}
+
+#cont-foto-nome {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+
+    text-align: left;
 }
 
 
@@ -141,6 +150,8 @@ body {
 #foto-perfil {
     margin-left: 2px;
     padding-left: 2px;
+
+    border: 2px solid #ffffff;
 }
 
 /* ================= ÁREA PRINCIPAL ================= */

@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/unauthorized.css">
+    <link rel="icon" href="/img/graduate-colorized.svg">
 </head>
 <body>
+
+
+{{ template "header.html" . }}
+
+<main class="main-content construction-area">
+    <div class="construction-icon">
+        <img src="/img/megafone.svg" alt="ìcon acesso negado" id="img-acesso-negado">
+        Acesso Negado
+    </div>
+    <p class="construction-text">Você não tem permissão para acessar esse recurso.<br>Se você tem acesso, sua sessão pode ter expirado. Faça login novamente.</p>
+
+    <a href="/home" class="btn-construction">
+        <span>Voltar para a página inicial</span>
+    </a>
+</main>
+
+{{ template "footer.html" . }}
 
 </body>
 </html>
