@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
         const propertyList = document.getElementById('lista-propriedades')
         if (data === null) {
             propertyList.style.textAlign = 'center'
+            propertyList.style.color = '#666666'
             propertyList.innerText = "Você não possui propriedades :("
             return
         }
@@ -61,12 +62,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
             novoCard(propertyList, prop.nome, prop.cidade, prop.estado, prop.descricao)
         })
     } else {
-        alert("erro u.u")
-    }
-
-
-    if (data.error != null && data.error === "Sessão expirada, por favor, faça login novamente") {
-        alert(data.error)
+        alert("erro")
     }
 });
 

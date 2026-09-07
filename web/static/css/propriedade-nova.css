@@ -1,95 +1,192 @@
 /* ================= FORMULÁRIO DE PROPRIEDADE ================= */
 .form-card {
     background-color: #ffffff;
-    padding: 2.5rem 3rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 173, 216, 0.08);
+    padding: 3.5rem 4rem; /* Mais respiro interno para não ficar grudado */
+    border-radius: 16px; /* Bordas mais suaves e modernas */
+    box-shadow: 0 15px 40px rgba(0, 173, 216, 0.08); /* Sombra maior e mais difusa */
     border-top: 6px solid var(--go-blue);
     width: 100%;
-    max-width: 700px;
-    margin: 2rem auto;
+    max-width: 750px; /* Um pouco mais largo para acomodar bem os campos */
+    margin: 3rem auto;
 }
 
-.property-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+.dashboard-header {
+    margin-bottom: 2.5rem;
+    text-align: center; /* Centralizar o cabeçalho fica mais harmonioso no form */
+}
+
+.dashboard-title {
+    font-size: 2.2rem;
+    color: var(--go-blue-dark);
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-subtitle {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+}
+
+/* Como você removeu a tag <form> que tinha o gap, adicionamos margem direta aos grupos */
+.input-group-form,
+.input-row,
+.extras {
+    margin-bottom: 1.8rem;
 }
 
 .input-group-form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.6rem;
 }
 
+/* Labels mais bonitas e com cara de sistema premium */
 .input-group-form label {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--text-color);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--go-blue-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
 }
 
 .input-group-form input,
 .input-group-form textarea,
 .input-group-form select {
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    padding: 16px 20px; /* Campos mais "gordinhos" e confortáveis */
+    border: 2px solid #eaeaea;
+    border-radius: 8px;
     font-size: 1rem;
     color: var(--text-color);
-    background-color: #fafafa;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    background-color: #fcfcfc; /* Fundo quase branco, muito sutil */
+    transition: all 0.3s ease;
     outline: none;
     width: 100%;
+}
+
+.input-group-form input::placeholder,
+.input-group-form textarea::placeholder {
+    color: #bbbbbb;
 }
 
 .input-group-form textarea {
     resize: vertical;
     font-family: inherit;
+    min-height: 120px;
 }
 
+/* Efeito macio ao clicar no campo */
 .input-group-form input:focus,
 .input-group-form textarea:focus,
 .input-group-form select:focus {
     border-color: var(--go-blue);
-    box-shadow: 0 0 0 3px rgba(0, 173, 216, 0.15);
+    box-shadow: 0 0 0 4px rgba(0, 173, 216, 0.15);
     background-color: #ffffff;
 }
 
 .input-row {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem; /* Mais espaço lateral entre Cidade e Estado */
 }
 
+.input-row .input-group-form {
+    margin-bottom: 0; /* Evita margem dupla dentro da linha */
+}
+
+/* Destaque sutil para os extras (Pet Friendly) */
 .extras {
-    margin-top: 0.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #eaeaea;
+    padding: 1.5rem;
+    background-color: var(--bg-color); /* Fundo com o azul gelo do GoBook */
+    border-radius: 8px;
+    border: 1px solid #e0f2f7;
+    margin-top: 2rem;
 }
 
-/* Reutilizando regras de botões da paleta */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--go-blue);
+    cursor: pointer;
+}
+
+/* Mensagem de Erro */
+#err {
+    color: #d32f2f;
+    text-align: center;
+    font-weight: 600;
+    margin-top: -10px;
+    margin-bottom: 15px;
+    min-height: 20px; /* Evita que a tela pule quando o erro aparecer */
+}
+
+/* Botões do Formulário */
 .btn-group {
     display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
 }
 
 .btn-group .btn {
-    flex: 1; /* Faz os botões dividirem o espaço igualmente */
+    flex: 1;
+    padding: 18px; /* Botões imponentes e fáceis de clicar */
+    font-size: 1.1rem;
+    font-weight: 700;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-primary {
+    background-color: var(--go-blue);
+    color: #ffffff;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--go-blue-dark);
+    transform: translateY(-2px); /* Efeito de flutuar ao passar o mouse */
+    box-shadow: 0 6px 15px rgba(0, 136, 170, 0.3);
+}
+
+.btn-outline {
+    border: 2px solid var(--go-blue);
+    color: var(--go-blue);
+    background: transparent;
+}
+
+.btn-outline:hover {
+    background: rgba(0, 173, 216, 0.1);
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
     .form-card {
         padding: 2rem 1.5rem;
-        margin: 1rem auto;
+        margin: 1.5rem auto;
+        border-radius: 12px;
     }
 
     .input-row {
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1.8rem;
     }
 
     .btn-group {
-        flex-direction: column-reverse;
+        flex-direction: column-reverse; /* No celular, o botão de salvar fica em cima e o cancelar embaixo */
+        gap: 1rem;
+    }
+
+    .btn-group .btn {
+        padding: 15px;
     }
 }

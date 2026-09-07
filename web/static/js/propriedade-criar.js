@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', (e) => {
             err.innerText = ''
             err.innerText = data.error
         } else {
-            alert("propriedade adicionada!")
+            window.location.replace('/propriedades/minhas')
         }
     })
 });
