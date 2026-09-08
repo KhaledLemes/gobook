@@ -18,6 +18,8 @@ import (
 	"github.com/gin-gonic/gin/binding"
 )
 
+const rex string = `^[\p{L}\s]+$`
+
 func CriaUsuario(c *gin.Context) {
 	var usuario models.Usuario
 	if err := c.ShouldBindWith(&usuario, binding.JSON); err != nil {

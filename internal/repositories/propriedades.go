@@ -17,7 +17,7 @@ func NewPropriedadesRepo(db *sql.DB) *RepoPropriedades {
 
 func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome " +
+		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome " +
 			"FROM propriedades " +
 			"left join usuarios " +
 			"on usuarios.id = propriedades.dono_id;")
@@ -29,7 +29,7 @@ func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error
 	var propriedades []models.Propriedade
 	for rows.Next() {
 		var propriedade models.Propriedade
-		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
 		propriedades = append(propriedades, propriedade)
 	}
 	return propriedades, nil
@@ -37,7 +37,7 @@ func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error
 
 func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
+		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
 			"FROM propriedades "+
 			"left join usuarios "+
 			"on usuarios.id = propriedades.dono_id WHERE propriedades.dono_id = ?;", userID)
@@ -49,7 +49,7 @@ func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, 
 	var propriedades []models.Propriedade
 	for rows.Next() {
 		var propriedade models.Propriedade
-		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
 		propriedades = append(propriedades, propriedade)
 	}
 	return propriedades, nil
@@ -57,7 +57,7 @@ func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, 
 
 func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly,categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
+		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly,categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
 			"FROM propriedades "+
 			"left join usuarios "+
 			"on usuarios.id = propriedades.dono_id WHERE propriedades.nome = ?;", nome)
@@ -67,7 +67,7 @@ func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Proprieda
 
 	var propriedade models.Propriedade
 	if rows.Next() {
-		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
 		return propriedade, nil
 	}
 	return models.Propriedade{}, errors.New("propriedade inexistente")
@@ -75,7 +75,7 @@ func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Proprieda
 
 func (r RepoPropriedades) BuscaPropriedadePorID(ID string) (models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
+		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
 			"FROM propriedades "+
 			"left join usuarios "+
 			"on usuarios.id = propriedades.dono_id WHERE propriedades.id = ?;", ID)
@@ -84,28 +84,28 @@ func (r RepoPropriedades) BuscaPropriedadePorID(ID string) (models.Propriedade, 
 	}
 	defer rows.Close()
 
-	var propriedade models.Propriedade
+	var p models.Propriedade
 	if rows.Next() {
-		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		rows.Scan(&p.ID, &p.Nome, &p.Descricao, &p.Estado, &p.Cidade, &p.PetFriendly, &p.Categoria, &p.Dono.ID, &p.Dono.Nome, &p.Dono.NomeMeio, &p.Dono.NomeUltimo)
 	}
-	return propriedade, nil
+	return p, nil
 }
 
-func (r RepoPropriedades) CriaPropriedade(propriedade *models.Propriedade, donoID int) (string, error) {
+func (r RepoPropriedades) CriaPropriedade(p *models.Propriedade, donoID int) (string, error) {
 	stmt, err := r.db.Prepare(
-		"INSERT into propriedades (nome, descricao, estado, cidade, pet_friendly, categoria, dono_id) values (?, ?, ?, ?, ?, ?, ?)",
+		"INSERT into propriedades (nome, descricao, endereco, numero, estado, cidade, pet_friendly, categoria, dono_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
 	)
 	if err != nil {
 		return "", err
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(propriedade.Nome, propriedade.Descricao, propriedade.Estado, propriedade.Cidade, propriedade.PetFriendly, propriedade.Categoria, donoID)
+	_, err = stmt.Exec(p.Nome, p.Descricao, p.Endereco, p.Numero, p.Estado, p.Cidade, p.PetFriendly, p.Categoria, donoID)
 	if err != nil {
 		return "", err
 	}
 
-	return propriedade.Nome, nil
+	return p.Nome, nil
 }
 
 func (r RepoPropriedades) VerificaDono(propriedadeID, userID int) (string, error) {

@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <title>{{ .title }}</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/owner-panel.css">
     <link rel="stylesheet" href="/css/home.css">
     <link rel="icon" href="/img/graduate-colorized.svg">
 
     <script src="/js/script.js"></script>
+    <script src="/js/home.js"></script>
 
 </head>
 <body>
@@ -22,7 +24,7 @@
     </section>
 
     <section class="search-section">
-        <form class="search-form" id="searchForm">
+        <div class="search-form" id="searchForm">
             <!-- Campo 1: Destino -->
             <div class="input-group">
                 <label class="sr-only">Destino planejado</label>
@@ -62,18 +64,21 @@
                             <button type="button" class="btn-counter" onclick="updateGuest('child', 1)">+</button>
                         </div>
                     </div>
+                    <div class="extras">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="pets">
+                            Vou levar pets
+                        </label>
+                    </div>
                 </div>
             </div>
 
             <button type="submit" class="btn btn-primary btn-search">Pesquisar</button>
-        </form>
-
-        <div class="extras">
-            <label class="checkbox-label">
-                <input type="checkbox" id="pets">
-                Vou levar pets
-            </label>
         </div>
+    </section>
+    <section class="properties-section">
+        <h1>Veja propriedades em destaque!</h1>
+        <div class="property-list" id="lista-propriedades-destaque"></div>
     </section>
 </main>
 

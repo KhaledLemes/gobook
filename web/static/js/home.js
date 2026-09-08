@@ -1,4 +1,4 @@
-function novoCard(lista, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
+function novoCardTelaPrincipal(lista, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
     const novoCard = document.createElement('div')
     novoCard.classList.add('property-card')
     lista.append(novoCard)
@@ -22,44 +22,38 @@ function novoCard(lista, propNome, propEndereco, propNumero, propCidade, propEst
     desc.textContent = propDescricao
     propertyInfo.append(desc)
 
+
     const acoes = document.createElement('div')
     acoes.classList.add('property-actions')
     novoCard.append(acoes)
 
-    const editar = document.createElement('button')
-    editar.classList.add('btn')
-    editar.classList.add('btn-outline')
-    editar.classList.add('btn-sm')
-    editar.textContent = "Editar"
-    acoes.append(editar)
-
     const excluir = document.createElement('button')
     excluir.classList.add('btn')
-    excluir.classList.add('btn-danger')
+    excluir.classList.add('btn-ver-mais')
     excluir.classList.add('btn-sm')
-    excluir.textContent = "Excluir"
+    excluir.textContent = "Ver mais"
     acoes.append(excluir)
 }
 
 document.addEventListener('DOMContentLoaded', async (e) => {
     e.preventDefault()
-    const req = await fetch("/api/v1/propriedades/minhas")
+
+    const req = await fetch("/api/v1/propriedades")
     const body = await req.json()
 
     if (req.status === 200) {
         const data = JSON.parse(JSON.stringify(body))
-        const propertyList = document.getElementById('lista-propriedades')
+        const propertyList = document.getElementById('lista-propriedades-destaque')
         if (data === null) {
             propertyList.style.textAlign = 'center'
             propertyList.style.color = '#666666'
-            propertyList.innerText = "Você não possui propriedades :("
+            propertyList.innerText = "Houve um erro em mostrar as propriedades em destaque"
             return
         }
         data.forEach(prop => {
-            novoCard(propertyList, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
+            novoCardTelaPrincipal(propertyList, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
         })
     } else {
-        alert("erro")
+        document.getElementById('lista-propriedades-destaque').innerText = "Houve um erro em mostrar as propriedades em destaque"
     }
-});
-
+})

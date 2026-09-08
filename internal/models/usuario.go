@@ -78,13 +78,27 @@ func (u *Usuario) validar(SeRegistrando bool) error {
 		if u.Nome == "" {
 			return errors.New("o nome é mandatório")
 		}
+		if len(u.Nome) > 20 {
+			return errors.New("o nome deve conter no máximo 20 caracteres")
+		}
+		if len(u.Nome) < 3 {
+			return errors.New("o nome deve conter pelo menos 3 caracteres")
+		}
 		if ok, err := regexp.Match(rexNome, []byte(u.Nome)); !ok || err != nil {
 			return errors.New("revise o nome e tente novamente")
 		}
 
-		if ok, err := regexp.Match(rexNome, []byte(u.NomeMeio)); !ok || err != nil {
-			if u.NomeMeio != "" {
-				return errors.New("revise o nome do meio e tente novamente")
+		if u.NomeMeio != "" {
+			if len(u.NomeMeio) > 30 {
+				return errors.New("o nome do meio deve conter no máximo 30 caracteres")
+			}
+			if len(u.NomeMeio) < 3 {
+				return errors.New("o nome do meio deve conter pelo menos 3 caracteres")
+			}
+			if ok, err := regexp.Match(rexNome, []byte(u.NomeMeio)); !ok || err != nil {
+				if u.NomeMeio != "" {
+					return errors.New("revise o nome do meio e tente novamente")
+				}
 			}
 		}
 
@@ -93,6 +107,12 @@ func (u *Usuario) validar(SeRegistrando bool) error {
 		}
 		if ok, err := regexp.Match(rexNome, []byte(u.NomeUltimo)); !ok || err != nil {
 			return errors.New("revise o último nome e tente novamente")
+		}
+		if len(u.NomeUltimo) > 30 {
+			return errors.New("o último nome deve conter no máximo 30 caracteres")
+		}
+		if len(u.NomeUltimo) < 3 {
+			return errors.New("o último nome deve conter pelo menos 3 caracteres")
 		}
 
 		if u.Role != RoleGuest && u.Role != RoleOwner {
@@ -127,7 +147,6 @@ func (u *Usuario) formatar(SeRegistrando bool) error {
 	u.Nome = primeiraLetraToUpper(u.Nome)
 	u.NomeMeio = primeiraLetraToUpper(u.NomeMeio)
 	u.NomeUltimo = primeiraLetraToUpper(u.NomeUltimo)
-
 
 	if SeRegistrando {
 		senhaHash, err := security.Hash(u.Senha)

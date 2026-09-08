@@ -11,7 +11,6 @@
 {{  template "header.html" . }}
 
 <body>
-
 <main class="main-content dashboard-area">
     <div class="form-card">
         <div class="dashboard-header">
@@ -20,53 +19,66 @@
         </div>
 
         <!-- Formulário de Criação -->
-            <div class="input-group-form">
-                <label for="nome">Nome da Propriedade</label>
-                <input type="text" id="nome" name="nome" placeholder="Ex: Pousada Sol Nascente" required>
+        <div class="input-group-form">
+            <label for="nome">Nome da Propriedade</label>
+            <input type="text" id="nome" name="nome" placeholder="Ex: Pousada Sol Nascente" required>
+        </div>
+
+        <div class="input-group-form">
+            <label for="descricao">Descrição</label>
+            <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva o que faz o seu espaço ser especial..." required></textarea>
+        </div>
+
+        <div class="input-group-form">
+            <label for="categoria">Categoria</label>
+            <select id="categoria" name="categoria" required>
+                <option value="" disabled selected>Selecione uma categoria...</option>
+                <option value="Pousada">Pousada</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Chalé">Chalé</option>
+                <option value="Casa">Casa inteira</option>
+                <option value="Apartamento">Apartamento</option>
+            </select>
+        </div>
+
+        <!-- Novos campos: Endereço e Número lado a lado -->
+        <div class="input-row">
+            <div class="input-group-form" style="flex: 3;">
+                <label for="endereco">Endereço</label>
+                <input type="text" id="endereco" name="endereco" placeholder="Ex: Rua das Flores" required>
             </div>
 
-            <div class="input-group-form">
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva o que faz o seu espaço ser especial..." required></textarea>
+            <div class="input-group-form" style="flex: 1;">
+                <label for="numero">Número</label>
+                <input type="text" id="numero" name="numero" placeholder="Ex: 123" required>
+            </div>
+        </div>
+
+        <!-- Campos lado a lado -->
+        <div class="input-row">
+            <div class="input-group-form" style="flex: 2;">
+                <label for="cidade">Cidade</label>
+                <input type="text" id="cidade" name="cidade" placeholder="Ex: Florianópolis" required>
             </div>
 
-            <div class="input-group-form">
-                <label for="categoria">Categoria</label>
-                <select id="categoria" name="categoria" required>
-                    <option value="" disabled selected>Selecione uma categoria...</option>
-                    <option value="Pousada">Pousada</option>
-                    <option value="Hotel">Hotel</option>
-                    <option value="Chalé">Chalé</option>
-                    <option value="Casa">Casa inteira</option>
-                    <option value="Apartamento">Apartamento</option>
-                </select>
+            <div class="input-group-form" style="flex: 1;">
+                <label for="estado">Estado (UF)</label>
+                <input type="text" id="estado" name="estado" placeholder="Ex: SP" maxlength="2" required>
             </div>
+        </div>
 
-            <!-- Campos lado a lado -->
-            <div class="input-row">
-                <div class="input-group-form" style="flex: 2;">
-                    <label for="cidade">Cidade</label>
-                    <input type="text" id="cidade" name="cidade" placeholder="Ex: Florianópolis" required>
-                </div>
-
-                <div class="input-group-form" style="flex: 1;">
-                    <label for="estado">Estado (UF)</label>
-                    <input type="text" id="estado" name="estado" placeholder="Ex: SC" maxlength="2" required>
-                </div>
-            </div>
-
-            <!-- Checkbox Pet Friendly -->
-            <div class="extras">
-                <label class="checkbox-label" for="pet_friendly">
-                    <input type="checkbox" id="pet_friendly" name="pet_friendly" value="1">
-                    Este local aceita pets (Pet Friendly)
-                </label>
-            </div>
-            <p id="err"></p>
-            <div class="btn-group">
-                <a href="/propriedades/minhas" class="btn btn-outline" style="text-decoration: none; text-align: center;">Cancelar</a>
-                <button type="submit" class="btn btn-primary" id="bt-enviar">Salvar Propriedade</button>
-            </div>
+        <!-- Checkbox Pet Friendly -->
+        <div class="extras">
+            <label class="checkbox-label" for="pet_friendly">
+                <input type="checkbox" id="pet_friendly" name="pet_friendly" value="1">
+                Este local aceita pets (Pet Friendly)
+            </label>
+        </div>
+        <p id="err"></p>
+        <div class="btn-group">
+            <a href="/propriedades/minhas" class="btn btn-outline" style="text-decoration: none; text-align: center;">Cancelar</a>
+            <button type="submit" class="btn btn-primary" id="bt-enviar">Salvar Propriedade</button>
+        </div>
     </div>
 </main>
 </body>
