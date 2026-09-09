@@ -29,7 +29,6 @@ func Err(c *gin.Context, statusCode int, err error) {
 
 func ErrHTML(c *gin.Context, code int, path string, err error) {
 	c.HTML(code, path, nil)
-	Err(c, code, err)
 	c.AbortWithStatus(code)
 }
 

@@ -38,7 +38,7 @@ function novoCardTelaPrincipal(lista, propNome, propEndereco, propNumero, propCi
 document.addEventListener('DOMContentLoaded', async (e) => {
     e.preventDefault()
 
-    const req = await fetch("/api/v1/propriedades")
+    const req = await fetch("/api/v1/propriedades/iniciais")
     const body = await req.json()
 
     if (req.status === 200) {
@@ -55,5 +55,20 @@ document.addEventListener('DOMContentLoaded', async (e) => {
         })
     } else {
         document.getElementById('lista-propriedades-destaque').innerText = "Houve um erro em mostrar as propriedades em destaque"
+        return
     }
+
+
+    const elementos = document.querySelectorAll('.property-card');
+
+    elementos.forEach(elemento => {
+        elemento.addEventListener('click', (e) => {
+
+            // Primeiro seleciona o card, depois pega o nome dele selecionando o elemento de nome que está dentro dele por classe
+            const clicado = e.currentTarget;
+            const nomeProp = clicado.querySelector('.property-name').textContent;
+            // Como o nome está dentro de um h3
+            alert(nomeProp)
+        });
+    });
 })

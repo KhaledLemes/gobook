@@ -7,6 +7,9 @@ import (
 	"gobook/internal/models"
 )
 
+// Como essa parte da query é repetida algumas vezes, declarei aqui para não repetir esse texto enorme toda hora
+var selectPropriedades = "SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome FROM propriedades left join usuarios on usuarios.id = propriedades.dono_id"
+
 type RepoPropriedades struct {
 	db *sql.DB
 }
@@ -17,10 +20,24 @@ func NewPropriedadesRepo(db *sql.DB) *RepoPropriedades {
 
 func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome " +
-			"FROM propriedades " +
-			"left join usuarios " +
-			"on usuarios.id = propriedades.dono_id;")
+		selectPropriedades + ";")
+	if err != nil {
+		return []models.Propriedade{}, err
+	}
+	defer rows.Close()
+
+	var propriedades []models.Propriedade
+	for rows.Next() {
+		var propriedade models.Propriedade
+		rows.Scan(&propriedade.ID, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		propriedades = append(propriedades, propriedade)
+	}
+	return propriedades, nil
+}
+
+func (r RepoPropriedades) BuscarDezPrimeirasPropriedadesAleatorio() ([]models.Propriedade, error) {
+	rows, err := r.db.Query(
+		selectPropriedades + " order by rand() limit 8")
 	if err != nil {
 		return []models.Propriedade{}, err
 	}
@@ -37,10 +54,7 @@ func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error
 
 func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
-			"FROM propriedades "+
-			"left join usuarios "+
-			"on usuarios.id = propriedades.dono_id WHERE propriedades.dono_id = ?;", userID)
+		selectPropriedades+" WHERE propriedades.dono_id = ?;", userID)
 	if err != nil {
 		return []models.Propriedade{}, err
 	}
@@ -57,10 +71,7 @@ func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, 
 
 func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly,categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
-			"FROM propriedades "+
-			"left join usuarios "+
-			"on usuarios.id = propriedades.dono_id WHERE propriedades.nome = ?;", nome)
+		selectPropriedades+" WHERE propriedades.nome = ?;", nome)
 	if err != nil {
 		return models.Propriedade{}, err
 	}
@@ -75,10 +86,7 @@ func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Proprieda
 
 func (r RepoPropriedades) BuscaPropriedadePorID(ID string) (models.Propriedade, error) {
 	rows, err := r.db.Query(
-		"SELECT propriedades.id, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome "+
-			"FROM propriedades "+
-			"left join usuarios "+
-			"on usuarios.id = propriedades.dono_id WHERE propriedades.id = ?;", ID)
+		selectPropriedades+" WHERE propriedades.id = ?;", ID)
 	if err != nil {
 		return models.Propriedade{}, err
 	}

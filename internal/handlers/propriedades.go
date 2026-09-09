@@ -36,6 +36,26 @@ func MostraTodasPropriedades(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, propriedades)
 }
 
+func BuscarDezPrimeirasPropriedadesAleatorio(c *gin.Context) {
+	var propriedades []models.Propriedade
+
+	db, err := database.Connect()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repo := repositories.NewPropriedadesRepo(db)
+	propriedades, err = repo.BuscarDezPrimeirasPropriedadesAleatorio()
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, propriedades)
+}
+
 func BuscarTodasPorDono(c *gin.Context) {
 	var propriedades []models.Propriedade
 

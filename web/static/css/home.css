@@ -226,7 +226,7 @@ body {
     gap: 5px;
 }
 
-.properties-section h1 {
+.properties-section h2 {
     font-size: 2.5rem;
     font-weight: 800;
     color: var(--go-blue-dark);
