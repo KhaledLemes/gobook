@@ -1,7 +1,13 @@
-function novoCardTelaPrincipal(lista, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
+function novoCardTelaPrincipal(lista, propFoto, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
     const novoCard = document.createElement('div')
     novoCard.classList.add('property-card')
     lista.append(novoCard)
+
+    const foto = document.createElement('img')
+    foto.classList.add('property-foto')
+    foto.src = `/img/propriedades/${propFoto}`
+    novoCard.append(foto)
+
 
     const propertyInfo = document.createElement('div')
     propertyInfo.classList.add('property-info')
@@ -51,7 +57,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
             return
         }
         data.forEach(prop => {
-            novoCardTelaPrincipal(propertyList, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
+            novoCardTelaPrincipal(propertyList, prop.foto, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
         })
     } else {
         document.getElementById('lista-propriedades-destaque').innerText = "Houve um erro em mostrar as propriedades em destaque"

@@ -238,6 +238,20 @@ body {
     color: var(--text-muted);
 }
 
+.property-foto {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    flex-shrink: 0;
+}
+
+.property-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
 .property-card h3 {
     text-align: left;
 }
@@ -245,6 +259,12 @@ body {
     text-align: left;
 }
 .property-card span {
+    text-align: left;
+}
+
+.property-info {
+    display: flex;
+    justify-content: left;
     text-align: left;
 }
 
