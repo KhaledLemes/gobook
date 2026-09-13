@@ -3,15 +3,20 @@ function novoCardTelaPrincipal(lista, propFoto, propNome, propEndereco, propNume
     novoCard.classList.add('property-card')
     lista.append(novoCard)
 
+    const container = document.createElement('figure')
+    container.classList.add('property-info-cont')
+    novoCard.append(container)
+
+
     const foto = document.createElement('img')
     foto.classList.add('property-foto')
     foto.src = `/img/propriedades/${propFoto}`
-    novoCard.append(foto)
+    container.append(foto)
 
 
     const propertyInfo = document.createElement('div')
     propertyInfo.classList.add('property-info')
-    novoCard.append(propertyInfo)
+    container.append(propertyInfo)
 
     const nome = document.createElement('h3')
     nome.classList.add('property-name')
@@ -20,25 +25,8 @@ function novoCardTelaPrincipal(lista, propFoto, propNome, propEndereco, propNume
 
     const loc = document.createElement('p')
     loc.classList.add('property-location')
-    loc.textContent = `${propEndereco}, ${propNumero} - ${propCidade}, ${propEstado}`
+    loc.textContent = `${propCidade}, ${propEstado}`
     propertyInfo.append(loc)
-
-    const desc = document.createElement('span')
-    desc.classList.add('property-desc')
-    desc.textContent = propDescricao
-    propertyInfo.append(desc)
-
-
-    const acoes = document.createElement('div')
-    acoes.classList.add('property-actions')
-    novoCard.append(acoes)
-
-    const excluir = document.createElement('button')
-    excluir.classList.add('btn')
-    excluir.classList.add('btn-ver-mais')
-    excluir.classList.add('btn-sm')
-    excluir.textContent = "Ver mais"
-    acoes.append(excluir)
 }
 
 document.addEventListener('DOMContentLoaded', async (e) => {

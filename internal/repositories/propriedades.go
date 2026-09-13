@@ -99,16 +99,16 @@ func (r RepoPropriedades) BuscaPropriedadePorID(ID string) (models.Propriedade, 
 	return p, nil
 }
 
-func (r RepoPropriedades) CriaPropriedade(p *models.Propriedade, donoID int) (string, error) {
+func (r RepoPropriedades) CriaPropriedade(p *models.Propriedade, donoID int, fotoPrincipal string) (string, error) {
 	stmt, err := r.db.Prepare(
-		"INSERT into propriedades (nome, descricao, endereco, numero, estado, cidade, pet_friendly, categoria, dono_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+		"INSERT into propriedades (nome, foto, descricao, endereco, numero, estado, cidade, pet_friendly, categoria, dono_id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 	)
 	if err != nil {
 		return "", err
 	}
 	defer stmt.Close()
 
-	_, err = stmt.Exec(p.Nome, p.Descricao, p.Endereco, p.Numero, p.Estado, p.Cidade, p.PetFriendly, p.Categoria, donoID)
+	_, err = stmt.Exec(p.Nome, fotoPrincipal, p.Descricao, p.Endereco, p.Numero, p.Estado, p.Cidade, p.PetFriendly, p.Categoria, donoID)
 	if err != nil {
 		return "", err
 	}

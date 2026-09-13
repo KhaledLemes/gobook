@@ -1,6 +1,9 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"gobook/internal/auth"
@@ -10,7 +13,9 @@ import (
 	"gobook/internal/responses"
 	"gobook/utils"
 	"net/http"
+	"path"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -135,7 +140,15 @@ func CriarPropriedade(c *gin.Context) {
 	}
 
 	var propriedade models.Propriedade
-	if err := c.ShouldBindBodyWith(&propriedade, binding.JSON); err != nil {
+
+	arquivo, err := c.FormFile("img")
+	if err != nil {
+		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+	data := c.PostForm("data")
+
+	if err := json.Unmarshal([]byte(data), &propriedade); err != nil {
 		responses.Err(c, http.StatusBadRequest, err)
 		return
 	}
@@ -158,8 +171,18 @@ func CriarPropriedade(c *gin.Context) {
 		return
 	}
 
+	bytes := make([]byte, 16)
+	_, err = rand.Read(bytes)
+	if err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
+		return
+	}
+	randstr := hex.EncodeToString(bytes)
+	extensao := strings.Split(arquivo.Filename, ".")[1]
+	nomeDoArquivo := fmt.Sprintf("%s.%s", randstr, extensao)
+
 	repo := repositories.NewPropriedadesRepo(db)
-	_, err = repo.CriaPropriedade(&propriedade, int(userID))
+	_, err = repo.CriaPropriedade(&propriedade, int(userID), nomeDoArquivo)
 	if err != nil {
 		if utils.VerificaErro(err, "Duplicate entry") {
 			msg := fmt.Sprintf("propriedade chamada %s já existe", propriedade.Nome)
@@ -167,6 +190,13 @@ func CriarPropriedade(c *gin.Context) {
 			return
 		}
 		responses.Err(c, http.StatusBadRequest, err)
+		return
+	}
+
+	caminho := path.Join("./web/static/img/propriedades", nomeDoArquivo)
+	fmt.Println(caminho)
+	if err = c.SaveUploadedFile(arquivo, caminho); err != nil {
+		responses.Err(c, http.StatusInternalServerError, err)
 		return
 	}
 

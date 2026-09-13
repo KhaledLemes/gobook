@@ -238,34 +238,54 @@ body {
     color: var(--text-muted);
 }
 
+#lista-propriedades-destaque {
+    display: flex;
+    flex-direction: row;
+
+    overflow-x: auto;
+    gap: 2rem;
+}
+
+
 .property-foto {
-    width: 180px;
-    height: 180px;
+    width: 300px;
+    height: 255px;
     object-fit: cover;
-    border-radius: 12px;
     flex-shrink: 0;
+
+    border-radius: 20px 20px 0 0;
 }
 
 .property-card {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
 }
 
 .property-card h3 {
-    text-align: left;
+    text-align: center;
 }
 .property-card p {
-    text-align: left;
+    text-align: center;
 }
 .property-card span {
-    text-align: left;
+    text-align: center;
+}
+
+.property-info-cont {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
 }
 
 .property-info {
     display: flex;
-    justify-content: left;
+    flex-direction: column;
+
     text-align: left;
+    padding: 50px;
+
+    background: #ffffff;
+
+    border-radius: 0 0 20px 20px;
 }
 
 .property-desc {
@@ -275,7 +295,6 @@ body {
 
 .property-actions {
     white-space: nowrap;
-    display: flex;
     gap: 12px;
 }
 
