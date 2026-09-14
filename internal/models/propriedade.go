@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"gobook/utils"
 	"regexp"
 	"slices"
 	"strconv"
@@ -137,9 +138,9 @@ func (p *Propriedade) formata() error {
 	p.Endereco = strings.ToLower(p.Endereco)
 	p.Cidade = strings.ToLower(p.Cidade)
 
-	p.Nome = primeiraLetraToUpper(p.Nome)
-	p.Endereco = primeiraLetraToUpper(p.Endereco)
-	p.Cidade = primeiraLetraToUpper(p.Cidade)
+	p.Nome = utils.PrimeiraLetraToUpper(p.Nome)
+	p.Endereco = utils.PrimeiraLetraToUpper(p.Endereco)
+	p.Cidade = utils.PrimeiraLetraToUpper(p.Cidade)
 
 	return nil
 }

@@ -20,6 +20,7 @@ var Categorias = []Categoria{
 	Apartamento,
 	Hotel,
 	Pousada,
+	Casa,
 }
 
 var Roles = []Role{

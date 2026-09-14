@@ -26,24 +26,24 @@
         <div class="search-form" id="searchForm">
             <!-- Campo 1: Destino -->
             <div class="input-group">
-                <label class="sr-only">Destino planejado</label>
-                <input type="text" placeholder="Para onde você vai?" required>
+                <label for="destino" class="input-describer">Destino planejado</label>
+                <input name="destino" id="destino" type="text" placeholder="Escreva para onde você vai!" required>
             </div>
 
             <!-- Campo 2: Datas -->
             <div class="input-group dates-group">
-                <label class="sr-only">Selecionar datas</label>
+                <label class="input-describer">Selecionar datas</label>
+                <p class="input-describer"><p>
                 <div class="date-inputs">
-                    <input type="date" id="checkin" required title="Data de Check-in">
+                    <input type="date" id="checkin" required title="Data de Check-in" placeholder="">
                     <span> — </span>
                     <input type="date" id="checkout" required title="Data de Check-out">
                 </div>
             </div>
-
             <div class="input-group guests-group" id="guestsContainer">
-                <label class="sr-only">Selecionar hóspedes</label>
+                <label class="input-describer">Selecionar hóspedes</label>
                 <div class="guests-display" id="guestsToggle">
-                    <span id="adultCountDisplay">2</span> adultos · <span id="childCountDisplay">0</span> crianças
+                    <span id="adultCountDisplay">2</span> <span id="adultWord">adultos</span> · <span id="childCountDisplay">0</span> <span id="childWord">crianças</span>
                 </div>
 
                 <div class="guests-popup" id="guestsPopup">

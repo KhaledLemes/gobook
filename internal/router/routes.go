@@ -61,7 +61,7 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		rotasPublicas.POST("/usuarios", controller.CriaUsuario)
 
 		rotasPublicas.GET("/propriedades", controller.MostraTodasPropriedades)
-		rotasPublicas.GET("/propriedades/iniciais", controller.BuscarDezPrimeirasPropriedadesAleatorio)
+		rotasPublicas.GET("/propriedades/iniciais", controller.BuscarOitoPrimeirasPropriedadesAleatorio)
 		rotasPublicas.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
 		rotasPublicas.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
 

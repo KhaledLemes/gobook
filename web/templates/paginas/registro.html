@@ -26,11 +26,13 @@
                 <div class="input-group-auth">
                     <label for="email">E-mail</label>
                     <input type="email" id="email" name="email" placeholder="nome@email.com" required>
+                    <p class="err" id="emailErr"></p>
                 </div>
 
                 <div class="input-group-auth">
                     <label for="senha">Senha</label>
                     <input type="password" id="senha" name="senha" placeholder="Crie uma senha forte" required>
+                    <p class="err" id="senhaErr"></p>
                 </div>
                 <div id="stp1-err-cont">
                     <p id="stp1-err"></p>
@@ -46,51 +48,56 @@
                     <div class="input-group-auth">
                         <label for="nome">Nome</label>
                         <input type="text" id="nome" name="nome" placeholder="Primeiro nome" required>
+                        <p class="err" id="nomeErr"></p>
                     </div>
                     <div class="input-group-auth">
                         <label for="nome_meio">Nome do Meio</label>
                         <input type="text" id="nome_meio" name="nome_meio" placeholder="Opcional">
+                        <p class="err" id="nome_meioErr"></p>
                     </div>
                 </div>
 
                 <div class="input-group-auth">
                     <label for="nome_ultimo">Último Nome</label>
-                    <input type="text" id="nome_ultimo" name="nome_ultimo" placeholder="Sobrenome" required>
+                    <input type="text" id="nome_ultimo" name="nome_ultimo" placeholder="Último nome" required>
+                    <p class="err" id="nome_ultimoErr"></p>
                 </div>
 
                 <div class="input-row">
                     <div class="input-group-auth">
                         <label for="nascimento">Nascimento</label>
                         <input type="date" id="nascimento" name="nascimento" required>
+                        <p class="err" id="nascimentoErr"></p>
                     </div>
                     <div class="input-group-auth">
                         <label for="tel">Telefone</label>
                         <input type="tel" id="tel" name="tel" placeholder="(11) 99999-9999" required>
+                        <p class="err" id="telErr"></p>
                     </div>
                 </div>
                 <!-- Retângulo de Seleção de Role (Adicionado no final do form) -->
                 <div class="role-selection">
-                    <p class="role-label">Você gostaria de:</p>
+                    <p class="role-label">Eu sou um...</p>
 
                     <div class="role-options">
                         <label class="role-option">
-                            <!-- value="owner" para quem vai anunciar -->
                             <input type="radio" name="tipo_conta" value="owner" required>
-                            <span>Anunciar propriedades</span>
+                            <span>Proprietário</span>
                         </label>
 
                         <label class="role-option">
                             <input type="radio" name="tipo_conta" value="guest">
-                            <span>Alugar para viajar</span>
+                            <span>Hóspede</span>
                         </label>
                     </div>
+                    <p class="err" id="err-radio"></p>
                 </div>
+
                 <div id="stp2-err-cont">
                     <p id="stp2-err" style="margin-top: -25px"></p>
                 </div>
                 <div class="btn-group">
                     <button type="button" class="btn btn-outline btn-auth" id="btnPrev">Voltar</button>
-                    <!-- Único botão que realmente fará o submit para o Go -->
                     <button type="submit" class="btn btn-primary btn-auth" id="finish">Finalizar Cadastro</button>
                 </div>
 

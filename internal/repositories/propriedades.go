@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"gobook/internal/models"
+	"gobook/utils"
 )
 
 // Como essa parte da query é repetida algumas vezes, declarei aqui para não repetir esse texto enorme toda hora
@@ -35,7 +36,7 @@ func (r RepoPropriedades) BuscarTodasPropriedades() ([]models.Propriedade, error
 	return propriedades, nil
 }
 
-func (r RepoPropriedades) BuscarDezPrimeirasPropriedadesAleatorio() ([]models.Propriedade, error) {
+func (r RepoPropriedades) BuscaroITOPrimeirasPropriedadesAleatorio() ([]models.Propriedade, error) {
 	rows, err := r.db.Query(
 		selectPropriedades + " order by rand() limit 8")
 	if err != nil {
@@ -47,6 +48,8 @@ func (r RepoPropriedades) BuscarDezPrimeirasPropriedadesAleatorio() ([]models.Pr
 	for rows.Next() {
 		var propriedade models.Propriedade
 		rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		strCat := utils.PrimeiraLetraToUpper(string(propriedade.Categoria))
+		propriedade.Categoria = models.Categoria(strCat)
 		propriedades = append(propriedades, propriedade)
 	}
 	return propriedades, nil

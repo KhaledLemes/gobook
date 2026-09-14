@@ -1,4 +1,4 @@
-function novoCardTelaPrincipal(lista, propFoto, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
+function novoCardTelaPrincipal(lista, propFoto, propNome, propCategoria, propEndereco, propNumero, propCidade, propEstado) {
     const novoCard = document.createElement('div')
     novoCard.classList.add('property-card')
     lista.append(novoCard)
@@ -17,6 +17,11 @@ function novoCardTelaPrincipal(lista, propFoto, propNome, propEndereco, propNume
     const propertyInfo = document.createElement('div')
     propertyInfo.classList.add('property-info')
     container.append(propertyInfo)
+
+    const categoria = document.createElement('h5')
+    categoria.classList.add('property-category')
+    categoria.textContent = propCategoria
+    propertyInfo.append(categoria)
 
     const nome = document.createElement('h3')
     nome.classList.add('property-name')
@@ -45,7 +50,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
             return
         }
         data.forEach(prop => {
-            novoCardTelaPrincipal(propertyList, prop.foto, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
+            novoCardTelaPrincipal(propertyList, prop.foto, prop.nome, prop.categoria,prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
         })
     } else {
         document.getElementById('lista-propriedades-destaque').innerText = "Houve um erro em mostrar as propriedades em destaque"

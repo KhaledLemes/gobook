@@ -14,9 +14,5 @@ func main() {
 
 	r.LoadHTMLGlob("web/templates/**/*.html")
 
-	// FileServer diz que root é a pasta selecionada
-	//fs := http.FileServer(http.Dir("./web/templates/"))
-	// Handle diz "me passe um caminho e o que ele vai fazer
-
 	r.Run("0.0.0.0:8080")
 }

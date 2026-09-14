@@ -1,6 +1,6 @@
 :root {
-    --go-blue: #00ADD8;
-    --go-blue-dark: #0088AA;
+    --go-blue: #26d4ff;
+    --go-blue-dark: #00AED9;
     --bg-color: #F7FBFC;
     --text-color: #333333;
     --text-muted: #666666;
@@ -70,6 +70,17 @@ body {
     flex-direction: column;
     justify-content: center;
     gap: 1.5rem;
+}
+
+.err {
+    color: red;
+    font-size: 14px;
+
+    text-align: center;
+}
+
+#err-radio {
+    margin: 8px;
 }
 
 #stp1-err-cont {

@@ -2,13 +2,12 @@ package models
 
 import (
 	"errors"
+	"gobook/internal/security"
+	"gobook/utils"
 	"regexp"
 	"slices"
 	"strings"
 	"time"
-	"unicode/utf8"
-
-	"gobook/internal/security"
 
 	"github.com/badoux/checkmail"
 )
@@ -144,9 +143,9 @@ func (u *Usuario) formatar(SeRegistrando bool) error {
 	u.NomeUltimo = strings.ToLower(u.NomeUltimo)
 	u.Email = strings.ToLower(u.Email)
 
-	u.Nome = primeiraLetraToUpper(u.Nome)
-	u.NomeMeio = primeiraLetraToUpper(u.NomeMeio)
-	u.NomeUltimo = primeiraLetraToUpper(u.NomeUltimo)
+	u.Nome = utils.PrimeiraLetraToUpper(u.Nome)
+	u.NomeMeio = utils.PrimeiraLetraToUpper(u.NomeMeio)
+	u.NomeUltimo = utils.PrimeiraLetraToUpper(u.NomeUltimo)
 
 	if SeRegistrando {
 		senhaHash, err := security.Hash(u.Senha)
@@ -206,9 +205,4 @@ func validaSenha(ps []byte) error {
 func especial(n byte) bool {
 	var lista = []byte{33, 35, 36, 37, 38, 42, 43, 45, 46, 63, 64}
 	return slices.Contains(lista, n)
-}
-
-func primeiraLetraToUpper(s string) string {
-	primeira, size := utf8.DecodeRuneInString(s)
-	return strings.ToUpper(string(primeira)) + s[size:]
 }

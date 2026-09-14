@@ -10,6 +10,32 @@ function getValue(el, porId) {
     return document.querySelector(el).value
 }
 
+function validaFormVazio(classe) {
+    let n = 0
+    classe.forEach((item) => {
+        const itemName = item.name
+        if (item.type === "radio") {
+            if (document.querySelector('input[name="tipo_conta"]:checked') == null) {
+                document.getElementById('err-radio').innerText = 'Selecione um campo'
+                n++
+            } else {
+                document.getElementById('err-radio').innerText = ''
+            }
+        } else {
+            if (item.value === "") {
+                if (item.name !== "nome_meio") {
+                    document.getElementById(`${itemName}Err`).innerText = `Campo mandatório`
+                    n++
+                }
+
+            } else if (item.value !== "") {
+                document.getElementById(`${itemName}Err`).innerText = ''
+            }
+        }
+    })
+    return n
+}
+
 document.addEventListener('DOMContentLoaded', (e) => {
     e.preventDefault()
     const step1 = document.getElementById('step1');
@@ -48,9 +74,15 @@ document.addEventListener('DOMContentLoaded', (e) => {
 
 
     btnFinish.addEventListener('click', async (e) => {
-
         e.preventDefault()
+        let fields = document.querySelectorAll('input')
+        if (validaFormVazio(fields) > 0) {
+            return
+        }
+
         const formatedDate = new Date(nascimento.value).toISOString()
+
+
         const req = await fetch("/api/v1/usuarios", {
             method: 'POST',
             body: JSON.stringify({

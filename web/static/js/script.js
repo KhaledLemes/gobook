@@ -61,8 +61,18 @@ window.updateGuest = function(type, change) {
     if (type === 'adult' && newVal < 1 || newVal > 6) return;
     if (type === 'child' && newVal < 0 || newVal > 6) return;
 
-    guests[type] = newVal;
+    const palavra = document.getElementById(`${type}Word`)
 
+    // Tira e coloca as palavras "adulto e crinaça" do plural
+    if (newVal === 1) {
+        palavra.innerText = palavra.innerText.replace('s', "")
+    } else {
+        if (palavra.innerText.indexOf('s') === -1) {
+            palavra.innerText += 's'
+        }
+    }
+
+    guests[type] = newVal;
     // Atualiza o texto no popup e no input condensado
     document.getElementById(`${type}Val`).innerText = guests[type];
     document.getElementById(`${type}CountDisplay`).innerText = guests[type];
