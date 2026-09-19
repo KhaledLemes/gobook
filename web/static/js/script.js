@@ -56,7 +56,7 @@ let guests = {
 window.updateGuest = function(type, change) {
     const newVal = guests[type] + change;
 
-    // Regras de negócio: mínimo 1 adulto e mínimo 0 crianças
+    // mínimo 1 adulto e mínimo 0 crianças
     if (guests.adult+guests.child >= 6 && change === 1) return;
     if (type === 'adult' && newVal < 1 || newVal > 6) return;
     if (type === 'child' && newVal < 0 || newVal > 6) return;

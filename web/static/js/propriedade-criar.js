@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', (e) => {
         const cidade = document.getElementById('cidade')
         const estado = document.getElementById('estado')
         const petFriendly = document.getElementById('pet_friendly')
-        const picEl = document.getElementById('foto_perfil')
+        const pictureEl = document.getElementById('foto_perfil')
 
-        const pic = picEl.files[0]
+        const pic = pictureEl.files[0]
         if (!pic) {
             err.innerText = ''
             err.innerText = 'Obrigatório selecionar uma foto'
