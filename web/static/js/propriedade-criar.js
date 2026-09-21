@@ -16,10 +16,9 @@ document.addEventListener('DOMContentLoaded', (e) => {
         const petFriendly = document.getElementById('pet_friendly')
         const pictureEl = document.getElementById('foto_perfil')
 
-        const pic = pictureEl.files[0]
+        let pic = pictureEl.files[0]
         if (!pic) {
-            err.innerText = ''
-            err.innerText = 'Obrigatório selecionar uma foto'
+            pic = "none"
             return
         }
         const formData = new FormData();

@@ -35,6 +35,7 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		paginasPublicas.GET("/home", controller.PaginaInicial)
 		paginasPublicas.GET("/login", controller.PaginaLogin)
 		paginasPublicas.GET("/registro", controller.PaginaRegistro)
+		paginasPublicas.GET("/:propriedade", controller.PaginaReserva)
 
 		paginasPublicas.GET("/unauthorized", controller.Unauthorized)
 	}

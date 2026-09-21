@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ .title }}</title>
+
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/reservando.css">
+  <link rel="icon" href="/img/graduate-colorized.svg">
+
+  <script src="/js/script.js"></script>
+  <script src="/js/home.js"></script>
+
+</head>
+<body>
+
+{{ template "header.html" . }}
+
+<main class="main-content dashboard-area">
+  <div class="property-detail-card">
+
+    <!-- Cabeçalho do Card -->
+    <div class="detail-header">
+      <div>
+        <span class="category-badge">Chalé</span>
+        <h1 class="property-title">Chalé das Montanhas</h1>
+        <p class="property-location">📍 Rua das Araucárias, 1500 - Campos do Jordão, SP</p>
+      </div>
+      <span class="status-badge">Pet Friendly</span>
+    </div>
+
+    <!-- Seção da Imagem Principal -->
+    <div class="image-container">
+      <img src="/img/chale-montanhas.jpg" alt="Foto principal do Chalé das Montanhas" class="main-property-image" onerror="this.onerror=null; this.src='/img/placeholder.png';">
+    </div>
+
+    <!-- Seção de Detalhes e Quartos -->
+    <div class="detail-section">
+      <h2 class="section-subtitle">Quartos Disponíveis & Comodidades</h2>
+      <div class="rooms-info">
+        <div class="room-item">
+          <strong>🛏️ Suíte Master:</strong> 1 Cama King, Banheira de Hidromassagem, Ar-Condicionado.
+        </div>
+        <div class="room-item">
+          <strong>🛏️ Quarto Duplo:</strong> 2 Camas de Solteiro, Vista para o Jardim, Wi-Fi Grátis.
+        </div>
+      </div>
+    </div>
+
+    <!-- Seção de Datas e Seleção de Hospedagem -->
+    <div class="detail-section input-row">
+      <div class="info-box">
+        <span class="info-label">Check-in</span>
+        <p class="info-value">15/10/2026</p>
+        <small class="info-sub">A partir das 14:00</small>
+      </div>
+      <div class="info-box">
+        <span class="info-label">Check-out</span>
+        <p class="info-value">20/10/2026</p>
+        <small class="info-sub">Até as 11:00</small>
+      </div>
+      <div class="info-box">
+        <span class="info-label">Hóspedes</span>
+        <p class="info-value">2 Adultos, 0 Crianças</p>
+      </div>
+    </div>
+
+    <!-- Resumo Financeiro -->
+    <div class="detail-section summary-box">
+      <h3 class="summary-title">Resumo dos Valores</h3>
+      <div class="summary-row">
+        <span>5 Noites (R$ 250,00 / noite)</span>
+        <span>R$ 1.250,00</span>
+      </div>
+      <div class="summary-row">
+        <span>Taxa de limpeza</span>
+        <span>R$ 120,00</span>
+      </div>
+      <div class="summary-total">
+        <span>Total</span>
+        <span>R$ 1.370,00</span>
+      </div>
+    </div>
+
+    <!-- Botões de Ação / Comprar -->
+    <div class="btn-group">
+      <a href="/home" class="btn btn-outline">Voltar</a>
+      <button type="button" class="btn btn-primary btn-buy" id="btn-comprar">Confirmar e Comprar</button>
+    </div>
+
+  </div>
+</main>
+
+{{ template "footer.html" . }}

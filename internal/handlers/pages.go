@@ -36,6 +36,15 @@ func PaginaRegistro(c *gin.Context) {
 	c.HTML(200, "registro.html", data)
 }
 
+func PaginaReserva(c *gin.Context) {
+	propertyName := c.Param("propriedade")
+	title := fmt.Sprintf("Gobook - %s!", propertyName)
+	data := gin.H{
+		"title": title,
+	}
+	c.HTML(200, "reserva.html", data)
+}
+
 func PaginaOwner(c *gin.Context) {
 	dataUnauth := gin.H{
 		"title": "Gobook - Invasor!",
