@@ -65,10 +65,3 @@ func AutenticaAdmin() gin.HandlerFunc {
 		c.Next()
 	}
 }
-
-func RespTypeJson() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Header("Content-Type", "application/json")
-		c.Next()
-	}
-}

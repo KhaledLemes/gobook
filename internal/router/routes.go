@@ -18,6 +18,7 @@ type Route struct {
 
 func ConfigRouter(r *gin.Engine) *gin.Engine {
 	r.Use(middleware.Logger())
+	r.NoRoute(controller.NotFound)
 
 	// Permite testar na minha máquina pela porta :8081 sem bloqueio de CORS
 	r.Use(cors.New(cors.Config{
@@ -35,15 +36,20 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		paginasPublicas.GET("/home", controller.PaginaInicial)
 		paginasPublicas.GET("/login", controller.PaginaLogin)
 		paginasPublicas.GET("/registro", controller.PaginaRegistro)
-		paginasPublicas.GET("/:propriedade", controller.PaginaReserva)
+		paginasPublicas.GET("/propriedades/:propriedade", controller.PaginaReserva)
 
 		paginasPublicas.GET("/unauthorized", controller.Unauthorized)
+
+		paginasPublicas.GET("/notfound", controller.NotFound)
+
 	}
 
 	paginasProprietarios := r.Group("/propriedades")
 	paginasProprietarios.Use(middleware.AutenticaProprietario())
 	{
 		paginasProprietarios.GET("/minhas", controller.PaginaOwner)
+		paginasProprietarios.GET("/minhas/:nome", controller.PropriedadeOwner)
+		paginasProprietarios.GET("/minhas/:nome/adicionar", controller.NovoQuarto)
 		paginasProprietarios.GET("/nova", controller.PaginaCriarPropriedade)
 		paginasProprietarios.GET("/editar", controller.PaginaOwner)
 		paginasProprietarios.GET("/excluir", controller.PaginaOwner)
@@ -65,7 +71,6 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		rotasPublicas.GET("/propriedades/iniciais", controller.BuscarOitoPrimeirasPropriedadesAleatorio)
 		rotasPublicas.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
 		rotasPublicas.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
-
 	}
 
 	rotasProtegidas := r.Group("/api/v1")

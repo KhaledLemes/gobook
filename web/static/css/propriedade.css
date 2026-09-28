@@ -141,6 +141,27 @@
     font-weight: 500;
 }
 
+
+/* ================= DESCRIÇÃO DA PROPRIEDADE ================= */
+.property-description {
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+    border-top: 1px solid #eaeaea;
+}
+
+.description-title {
+    font-size: 1.3rem;
+    color: var(--go-blue-dark);
+    margin-bottom: 0.8rem;
+}
+
+.description-text {
+    font-size: 0.95rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    max-width: 900px;
+}
+
 /* ================= TABELA DE QUARTOS ================= */
 .availability-section {
     background: #ffffff;

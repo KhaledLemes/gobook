@@ -1,0 +1,66 @@
+/* ================= PÁGINA DE ERRO 404 ================= */
+.construction-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    flex: 1;
+}
+
+.construction-icon {
+    font-size: 6rem;
+    margin-bottom: 1.5rem;
+
+    animation: floatError 4s ease-in-out infinite;
+    text-shadow: 0 10px 20px rgba(0, 173, 216, 0.2);
+}
+
+.construction-title {
+    font-size: 3rem;
+    color: var(--go-blue-dark);
+    margin-bottom: 1rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+.construction-text {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    max-width: 550px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+}
+
+
+.btn-construction {
+    display: inline-block;
+    padding: 14px 28px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    background-color: var(--go-blue);
+    color: #ffffff;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 173, 216, 0.2);
+}
+
+.btn-construction:hover {
+    background-color: var(--go-blue-dark);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 173, 216, 0.4);
+}
+
+@keyframes floatError {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-15px) rotate(-8deg);
+    }
+    75% {
+        transform: translateY(-15px) rotate(8deg);
+    }
+}

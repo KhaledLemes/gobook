@@ -1,4 +1,4 @@
-function novoCard(lista, propNome, propEndereco, propNumero, propCidade, propEstado, propDescricao) {
+function novoCard(lista, propNome, propEndereco, propNumero, propCidade, propEstado) {
     const novoCard = document.createElement('div')
     novoCard.classList.add('property-card')
     lista.append(novoCard)
@@ -16,11 +16,6 @@ function novoCard(lista, propNome, propEndereco, propNumero, propCidade, propEst
     loc.classList.add('property-location')
     loc.textContent = `${propEndereco}, ${propNumero} - ${propCidade}, ${propEstado}`
     propertyInfo.append(loc)
-
-    const desc = document.createElement('span')
-    desc.classList.add('property-desc')
-    desc.textContent = propDescricao
-    propertyInfo.append(desc)
 
     const acoes = document.createElement('div')
     acoes.classList.add('property-actions')
@@ -56,7 +51,14 @@ document.addEventListener('DOMContentLoaded', async (e) => {
             return
         }
         data.forEach(prop => {
-            novoCard(propertyList, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado, prop.descricao)
+            novoCard(propertyList, prop.nome, prop.endereco, prop.numero, prop.cidade, prop.estado)
+        })
+        cards = document.querySelectorAll('.property-card')
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                cardNome = card.querySelector('.property-name').textContent
+                window.location.href = `/propriedades/minhas/${cardNome}`
+            })
         })
     } else {
         alert("erro")

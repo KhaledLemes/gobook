@@ -9,7 +9,7 @@ import (
 )
 
 // Como essa parte da query é repetida algumas vezes, declarei aqui para não repetir esse texto enorme toda hora
-var selectPropriedades = "SELECT propriedades.id, propriedades.foto, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.pet_friendly, propriedades.categoria, propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome FROM propriedades left join usuarios on usuarios.id = propriedades.dono_id"
+var selectPropriedades = "SELECT propriedades.id, propriedades.foto, propriedades.nome, propriedades.endereco, propriedades.numero, propriedades.descricao, propriedades.estado, propriedades.cidade, propriedades.categoria, propriedades.pet_friendly,propriedades.dono_id, usuarios.nome, usuarios.nome_do_meio, usuarios.ultimo_nome FROM propriedades left join usuarios on usuarios.id = propriedades.dono_id"
 
 type RepoPropriedades struct {
 	db *sql.DB
@@ -47,7 +47,7 @@ func (r RepoPropriedades) BuscaroITOPrimeirasPropriedadesAleatorio() ([]models.P
 	var propriedades []models.Propriedade
 	for rows.Next() {
 		var propriedade models.Propriedade
-		rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
 		strCat := utils.PrimeiraLetraToUpper(string(propriedade.Categoria))
 		propriedade.Categoria = models.Categoria(strCat)
 		propriedades = append(propriedades, propriedade)
@@ -66,7 +66,8 @@ func (r RepoPropriedades) BuscarTodasPorDono(userID int) ([]models.Propriedade, 
 	var propriedades []models.Propriedade
 	for rows.Next() {
 		var propriedade models.Propriedade
-		rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.PetFriendly, &propriedade.Categoria, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		_ = rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly,
+			&propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
 		propriedades = append(propriedades, propriedade)
 	}
 	return propriedades, nil
@@ -81,7 +82,9 @@ func (r RepoPropriedades) BuscaPropriedadePorNome(nome string) (models.Proprieda
 
 	var propriedade models.Propriedade
 	if rows.Next() {
-		rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo)
+		if err = rows.Scan(&propriedade.ID, &propriedade.FotoPrincipal, &propriedade.Nome, &propriedade.Endereco, &propriedade.Numero, &propriedade.Descricao, &propriedade.Estado, &propriedade.Cidade, &propriedade.Categoria, &propriedade.PetFriendly, &propriedade.Dono.ID, &propriedade.Dono.Nome, &propriedade.Dono.NomeMeio, &propriedade.Dono.NomeUltimo); err != nil {
+			return models.Propriedade{}, err
+		}
 		return propriedade, nil
 	}
 	return models.Propriedade{}, errors.New("propriedade inexistente")

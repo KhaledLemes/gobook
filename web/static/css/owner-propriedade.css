@@ -1,0 +1,141 @@
+/* ================= PAINEL DO PROPRIETÁRIO (DASHBOARD) ================= */
+.dashboard-area {
+    max-width: 1200px;
+    margin: 2.5rem auto; /* Centraliza na tela e dá espaço no topo/base */
+    padding: 0 2rem;     /* Impede que o conteúdo grude nas bordas laterais da tela */
+    width: 100%;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Mantém os botões alinhados com o final do texto */
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #eaeaea;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Dá um respiro entre a tag, o título e o endereço */
+}
+
+/* ================= TAGS E TÍTULOS ================= */
+.property-category-tag {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: #ffffff;
+    background-color: var(--go-blue);
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 6px;
+    width: fit-content;
+    letter-spacing: 0.5px;
+}
+
+.dashboard-title {
+    font-size: 2.4rem;
+    color: var(--go-blue-dark);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.dashboard-subtitle {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.property-actions {
+    display: flex;
+    gap: 15px; /* Distância confortável entre os botões */
+}
+
+/* ================= VISÃO GERAL (CARD PRINCIPAL) ================= */
+.overview-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 3rem; /* Padding generoso para o conteúdo não grudar na borda do card */
+    box-shadow: 0 4px 25px rgba(0, 173, 216, 0.08); /* Sombra mais elegante */
+    border-top: 5px solid var(--go-blue);
+    margin-bottom: 3.5rem; /* Margem grande separando os Quartos lá embaixo */
+}
+
+.overview-content {
+    display: flex;
+    gap: 3rem; /* Espaço bem largo separando a foto da direita (textos) */
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.overview-img {
+    width: 340px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Efeito bonito na foto */
+}
+
+.overview-info {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem; /* Separa o título secundário da descrição */
+}
+
+.property-name {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    font-weight: 800;
+}
+
+.overview-desc {
+    font-size: 1.05rem;
+    line-height: 1.7; /* Texto com espaçamento entrelinhas mais gostoso de ler */
+    color: var(--text-muted);
+}
+
+.overview-tags {
+    display: flex;
+    gap: 12px;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.status-active {
+    background-color: rgba(0, 173, 216, 0.1);
+    color: var(--go-blue-dark);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 50px; /* Formato de "pílula" suave */
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0, 173, 216, 0.2);
+}
+
+/* ================= SEÇÃO DE QUARTOS ================= */
+.rooms-header {
+    border-bottom: none;
+    margin-bottom: 1rem;
+    padding-bottom: 0;
+}
+.rooms-header .dashboard-title {
+    font-size: 1.8rem;
+}
+
+.empty-state-box {
+    background-color: #ffffff;
+    border: 2px dashed #eaeaea;
+    border-radius: 8px;
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
+}

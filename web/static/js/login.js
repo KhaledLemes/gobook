@@ -1,5 +1,8 @@
 async function fazerLogin(email, senha, errCont) {
     const req = await fetch("/api/v1/login", {
+        headers: {
+            "Content-Type": "application/json"
+        },
         body: JSON.stringify({
             "email": email,
             "senha": senha
@@ -37,5 +40,16 @@ document.addEventListener('DOMContentLoaded', (e) => {
         await fazerLogin(email.value, senha.value, loginErr)
 
     })
+
+    const jumpStep = document.getElementById('jump-step')
+    if (jumpStep) {
+        jumpStep.addEventListener('click', async (e) => {
+            e.preventDefault()
+            loginErr.innerText = ""
+            email.value = "amoabra3ao@gmail.com"
+            senha.value = "Khaled13@"
+            await fazerLogin("amoabra3ao@gmail.com", "Khaled13@", loginErr)
+        })
+    }
 })
 

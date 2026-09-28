@@ -15,6 +15,13 @@ func PaginaConstrucao(c *gin.Context) {
 	c.HTML(200, "construcao.html", data)
 }
 
+func NotFound(c *gin.Context) {
+	data := gin.H{
+		"title": "Gobook - Página não encontrada!",
+	}
+	c.HTML(404, "notFound.html", data)
+}
+
 func PaginaLogin(c *gin.Context) {
 	data := gin.H{
 		"title": "Gobook - Cadastro e Login",
@@ -42,7 +49,7 @@ func PaginaReserva(c *gin.Context) {
 	data := gin.H{
 		"title": title,
 	}
-	c.HTML(200, "reserva.html", data)
+	c.HTML(200, "propriedade.html", data)
 }
 
 func PaginaOwner(c *gin.Context) {
@@ -59,12 +66,56 @@ func PaginaOwner(c *gin.Context) {
 	}
 
 	role, err := auth.PegarRoleUsuario(c)
-	if err != nil || role != "owner" && role != "guest" {
+	if err != nil || role != "owner" && role != "admin" {
 		c.HTML(http.StatusUnauthorized, "unauthorized.html", dataUnauth)
 		return
 	}
 
 	c.HTML(http.StatusOK, "owner-panel.html", dataAuth)
+}
+
+func PropriedadeOwner(c *gin.Context) {
+	dataUnauth := gin.H{
+		"title": "Gobook - Invasor!",
+	}
+	dataAuth := gin.H{
+		"title": "Gobook - Sua propriedade",
+	}
+
+	if _, err := c.Cookie("auth"); err != nil {
+		c.HTML(http.StatusUnauthorized, "unauthorized.html", dataUnauth)
+		return
+	}
+
+	role, err := auth.PegarRoleUsuario(c)
+	if err != nil || role != "owner" && role != "admin" {
+		c.HTML(http.StatusUnauthorized, "unauthorized.html", dataUnauth)
+		return
+	}
+
+	c.HTML(http.StatusOK, "owner-propriedade.html", dataAuth)
+}
+
+func NovoQuarto(c *gin.Context) {
+	dataUnauth := gin.H{
+		"title": "Gobook - Novo quarto!",
+	}
+	dataAuth := gin.H{
+		"title": "Gobook - Sua propriedade",
+	}
+
+	if _, err := c.Cookie("auth"); err != nil {
+		c.HTML(http.StatusUnauthorized, "unauthorized.html", dataUnauth)
+		return
+	}
+
+	role, err := auth.PegarRoleUsuario(c)
+	if err != nil || role != "owner" && role != "admin" {
+		c.HTML(http.StatusUnauthorized, "unauthorized.html", dataUnauth)
+		return
+	}
+
+	c.HTML(http.StatusOK, "adicionar-quarto.html", dataAuth)
 }
 
 func Unauthorized(c *gin.Context) {

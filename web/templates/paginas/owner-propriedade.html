@@ -2,9 +2,60 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ .title }}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/propriedade.css">
+    <link rel="stylesheet" href="/css/owner-propriedade.css">
+
+    <script src="/js/owner-propriedade.js"></script>
+
 </head>
 <body>
+{{ template "header.html" . }}
 
+<main class="main-content dashboard-area">
+    <!-- Cabeçalho de Gerenciamento da Propriedade -->
+    <div class="dashboard-header">
+        <div class="header-titles">
+            <span class="property-category-tag" id="prop-categoria">...</span>
+            <h1 class="dashboard-title" id="prop-nome">...</h1>
+            <p class="dashboard-subtitle" id="prop-endereco">...</p>
+        </div>
+        <div class="property-actions">
+            <button class="btn btn-outline" id="btn-editar-propriedade">Editar dados</button>
+            <button class="btn btn-primary" id="btn-adicionar-quarto">+ Adicionar quarto</button>
+        </div>
+    </div>
+
+    <!-- Container com as infos do JSON (Visão Geral) -->
+    <div class="property-card overview-card">
+        <div class="overview-content">
+            <img id="prop-foto" src="/img/placeholder.png" alt="Foto principal" class="overview-img">
+
+            <div class="property-info overview-info">
+                <h3 class="property-name">Sobre esta propriedade</h3>
+                <p class="property-desc overview-desc" id="prop-descricao">Carregando descrição...</p>
+
+                <div class="overview-tags">
+                    <span class="status-active" id="prop-avaliacao">⭐ Avaliação: -</span>
+                    <span class="status-active" id="prop-pet" style="display: none;">🐾 Pet Friendly</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Quartos -->
+    <div class="dashboard-header rooms-header">
+        <h2 class="dashboard-title">Quartos Cadastrados</h2>
+    </div>
+
+    <div class="property-list" id="lista-quartos">
+        <div id="empty-rooms-msg" class="empty-state-box">
+            <p>Essa propriedade ainda não possui quartos.</p>
+        </div>
+        <!-- Cards dos quartos serão injetados aqui -->
+    </div>
+</main>
+{{ template "footer.html" . }}
 </body>
 </html>

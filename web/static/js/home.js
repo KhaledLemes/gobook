@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', async (e) => {
             const clicado = e.currentTarget;
             const nomeProp = clicado.querySelector('.property-name').textContent;
             // Como o nome está dentro de um h3
-            alert(nomeProp)
+            window.location.assign(`/propriedades/${nomeProp}`)
         });
     });
 })

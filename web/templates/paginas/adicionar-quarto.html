@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gobook - Adicionar quarto</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/adicionar-quarto.css">
+</head>
+<body>
+{{ template "header.html" . }}
+    <main class="main-content dashboard-area">
+        <div class="form-card">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Adicionar Novo Quarto</h1>
+                <p class="dashboard-subtitle">Preencha as informações do quarto para disponibilizá-lo para reservas</p>
+            </div>
+
+            <form id="form-adicionar-quarto" class="quarto-form" enctype="multipart/form-data">
+                <div class="input-group-form">
+                    <label for="nome">Nome do Quarto</label>
+                    <input type="text" id="nome" name="nome" placeholder="Ex: Suíte Luxo com Cama King" required>
+                </div>
+
+                <div class="input-group-form">
+                    <label for="descricao">Descrição do Quarto</label>
+                    <textarea id="descricao" name="descricao" rows="4" placeholder="Descreva as comodidades do quarto (ex: cama queen, ar-condicionado split, varanda com vista, frigobar)..." required></textarea>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group-form" style="flex: 1;">
+                        <label for="valor_noite">Preço por Noite (R$)</label>
+                        <input type="number" id="valor_noite" name="valor_noite" placeholder="0,00" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="input-group-form" style="flex: 1;">
+                        <label for="disponivel">Quantidade Disponível</label>
+                        <input type="number" id="disponivel" name="disponivel" placeholder="Ex: 5" min="1" value="1" required>
+                    </div>
+                </div>
+
+                <div class="input-row">
+                    <div class="input-group-form" style="flex: 1;">
+                        <label for="reembolso">Data Limite de Cancelamento Grátis</label>
+                        <input type="date" id="reembolso" name="reembolso">
+                    </div>
+
+                    <div class="input-group-form" style="flex: 1;">
+                        <label for="foto">Foto do Quarto</label>
+                        <input type="file" id="foto" name="foto" accept="image/*">
+                    </div>
+                </div>
+
+                <p id="err" class="error-message"></p>
+
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline" onclick="history.back()">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" id="btn-salvar-quarto">Salvar Quarto</button>
+                </div>
+            </form>
+        </div>
+    </main>
+{{ template "footer.html" . }}
+</body>
+</html>

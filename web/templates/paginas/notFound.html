@@ -2,9 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>GoBook - Not Found :(</title>
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/notfound.css">
 </head>
 <body>
 
+{{  template "header.html" . }}
+
+<main class="main-content construction-area">
+    <div class="construction-icon">🧭</div>
+
+    <h1 class="construction-title">Erro 404: Página não encontrada</h1>
+
+    <p class="construction-text">
+        Parece que você navegou para fora do mapa! A página que você está tentando acessar não existe, foi movida ou a URL está incorreta.
+    </p>
+
+    <a href="/home" class="btn-construction">Voltar para a página inicial</a>
+</main>
 </body>
+
+{{ template "footer.html" . }}
+
 </html>
