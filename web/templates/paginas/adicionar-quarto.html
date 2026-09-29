@@ -5,6 +5,8 @@
     <title>Gobook - Adicionar quarto</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/adicionar-quarto.css">
+
+    <script src="/js/adicionar-quarto.js"></script>
 </head>
 <body>
 {{ template "header.html" . }}
@@ -42,6 +44,10 @@
                     <div class="input-group-form" style="flex: 1;">
                         <label for="reembolso">Data Limite de Cancelamento Grátis</label>
                         <input type="date" id="reembolso" name="reembolso">
+                        <label for="nao-reembolsavel" class="checkbox-label">
+                            <input type="checkbox" id="nao-reembolsavel" name="nao_reembolsavel">
+                            Não reembolsável
+                        </label>
                     </div>
 
                     <div class="input-group-form" style="flex: 1;">

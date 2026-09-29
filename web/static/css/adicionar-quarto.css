@@ -100,6 +100,23 @@
     background-color: #ffffff;
 }
 
+.input-group-form .checkbox-label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.25rem;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.input-group-form .checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 auto;
+}
+
 #err,
 .error-message {
     color: #d32f2f;

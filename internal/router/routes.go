@@ -70,6 +70,7 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 		rotasPublicas.GET("/propriedades", controller.MostraTodasPropriedades)
 		rotasPublicas.GET("/propriedades/iniciais", controller.BuscarOitoPrimeirasPropriedadesAleatorio)
 		rotasPublicas.GET("/propriedades/id/:id", controller.BuscaPropriedadePorID)
+		rotasPublicas.GET("/propriedades/quartos/:id", controller.BuscarTodosQuartosDaPropriedade)
 		rotasPublicas.GET("/propriedades/:nome", controller.BuscaPropriedadePorNome)
 	}
 
@@ -83,6 +84,12 @@ func ConfigRouter(r *gin.Engine) *gin.Engine {
 
 		rotasProtegidas.GET("/me", controller.Me)
 		rotasProtegidas.GET("/logout", controller.Logout)
+
+		rotasProtegidas.GET("/quartos", controller.BuscarTodosQuartosDoDono)
+		rotasProtegidas.GET("/quartos/:nome", controller.BuscarQuartoPorNome)
+		rotasProtegidas.POST("/quartos", controller.CriarQuarto)
+		rotasProtegidas.PUT("/quartos/:id", controller.AtualizarQuarto)
+		rotasProtegidas.DELETE("/quartos/:nome", controller.DeletarQuartoPorNome)
 
 	}
 

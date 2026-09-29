@@ -1,13 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    // 1. Extrai o nome da propriedade da URL
     const pathParts = window.location.pathname.split('/');
     const nomeDaPropriedade = pathParts[pathParts.length - 1];
-
-    const btnAdicionarQuarto = document.getElementById('btn-adicionar-quarto');
-        btnAdicionarQuarto.addEventListener('click', () => {
-            const urlAtual = window.location.pathname.replace(/\/$/, '');
-            window.location.href = `${urlAtual}/adicionar`;
-        });
 
 
     try {
@@ -16,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
             throw new Error('Falha ao buscar os dados da propriedade.');
         }
+
 
         const prop = await response.json();
 
@@ -35,24 +29,39 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('prop-pet').style.display = 'inline-block';
         }
 
+        const quartosResponse = await fetch(`/api/v1/propriedades/quartos/${encodeURIComponent(prop.id)}`, {
+            method: 'GET',
+        });
+        if (!quartosResponse.ok) {
+            throw new Error('Falha ao buscar os quartos da propriedade.');
+        }
+        const quartos = await quartosResponse.json();
+
+        const propriedadeID = prop.id
+        const btnAdicionarQuarto = document.getElementById('btn-adicionar-quarto');
+        btnAdicionarQuarto.addEventListener('click', () => {
+            const urlAtual = window.location.pathname.replace(/\/$/, '');
+            window.location.href = `${urlAtual}/adicionar?p=${encodeURIComponent(propriedadeID)}`;
+        });
+
         const listaQuartos = document.getElementById('lista-quartos');
         const emptyMsg = document.getElementById('empty-rooms-msg');
 
-        if (!prop.quartos || prop.quartos.length === 0) {
+        if (!quartos || quartos.length === 0) {
             // Mostra o texto "essa propriedade ainda não possui quartos"
             emptyMsg.style.display = 'block';
         } else {
             // Oculta a mensagem e renderiza a lista
             emptyMsg.style.display = 'none';
 
-            prop.quartos.forEach(quarto => {
+            quartos.forEach(quarto => {
                 const roomCard = document.createElement('div');
                 roomCard.classList.add('property-card');
 
                 roomCard.innerHTML = `
                     <div class="property-info">
                         <h3 class="property-name">${quarto.nome || 'Quarto Padrão'}</h3>
-                        <p class="property-location">💰 R$ ${quarto.preco || '0.00'} / noite</p>
+                        <p class="property-location">💰 R$ ${quarto.valor_noite || '0.00'} / noite</p>
                         <p class="property-desc">${quarto.descricao || 'Sem descrição cadastrada.'}</p>
                     </div>
                     <div class="property-actions">
@@ -69,5 +78,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error("Erro na comunicação com a API:", erro);
         document.getElementById('prop-nome').textContent = "Erro ao carregar os dados";
         document.getElementById('prop-descricao').textContent = "Verifique o backend e o console.";
+
+        const bts = document.getElementsByClassName('btn');
+        for (let i = 0; i < bts.length; i++) {
+            bts[i].disabled = true;
+        }
     }
 });

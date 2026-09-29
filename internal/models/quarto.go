@@ -4,6 +4,7 @@ import (
 	"errors"
 	"strings"
 	"time"
+	"unicode/utf8"
 )
 
 type Quarto struct {
@@ -16,13 +17,17 @@ type Quarto struct {
 
 	Disponivel int `json:"disponivel"`
 
-	Propriedade int `json:"propriedad"`
+	Propriedade int `json:"propriedade"`
 
 	Dono int `json:"dono"`
 
 }
 
 func (q *Quarto) Validar() error {
+	if q.Propriedade < 0 {
+		return errors.New("o id da propriedade é inválido")
+	}
+
 	nomeTrim := strings.TrimSpace(q.Nome)
 	if nomeTrim == "" {
 		return errors.New("o nome do quarto não pode ser vazio")
@@ -32,10 +37,11 @@ func (q *Quarto) Validar() error {
 	}
 	q.Nome = nomeTrim
 
-	if strings.TrimSpace(q.Descricao) == "" {
-		return errors.New("a descrição do quarto não pode ser vazia")
-	}
 	q.Descricao = strings.TrimSpace(q.Descricao)
+	tamanhoDescricao := utf8.RuneCountInString(q.Descricao)
+	if tamanhoDescricao < 1 || tamanhoDescricao > 1024 {
+		return errors.New("a descrição do quarto deve ter entre 1 e 1024 caracteres")
+	}
 
 	if q.ValorNoite < 0 {
 		return errors.New("o valor da noite não pode ser menor que 0")

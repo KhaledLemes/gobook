@@ -3,7 +3,6 @@ package repositories
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 	"gobook/internal/models"
 	"gobook/utils"
 )
@@ -132,17 +131,16 @@ func (r RepoPropriedades) VerificaDono(propriedadeID, userID int) (string, error
 	defer rows.Close()
 
 	var (
-		donoPropID int
-		nome       string
+		donoID int
+		nome   string
 	)
 	if rows.Next() {
-		if err := rows.Scan(&nome, &donoPropID); err != nil {
+		if err := rows.Scan(&nome, &donoID); err != nil {
 			return "", err
 		}
-		if donoPropID == userID {
+		if donoID == userID {
 			return nome, nil
 		}
-		fmt.Println(userID, donoPropID)
 
 		return "", errors.New("a propriedade não existe ou você não tem permissão para acessá-la")
 	}

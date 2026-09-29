@@ -15,7 +15,7 @@ func NewQuartosRepo(db *sql.DB) *RepoQuartos {
 
 func (r RepoQuartos) BuscarTodosQuartosDeUsuarioPorID(userID int) ([]models.Quarto, error) {
 	query := `
-		SELECT id, nome, valor_noite, reembolso, foto, disponivel, propriedade, dono 
+		SELECT id, nome, descricao, valor_noite, reembolso, foto, disponivel, propriedade, dono
 		FROM quartos 
 		WHERE dono = ?
 	`
@@ -29,10 +29,10 @@ func (r RepoQuartos) BuscarTodosQuartosDeUsuarioPorID(userID int) ([]models.Quar
 
 	for rows.Next() {
 		var q models.Quarto
-		// O Scan mapeia as colunas retornadas pelo banco para os campos da Struct
 		err := rows.Scan(
 			&q.ID,
 			&q.Nome,
+			&q.Descricao,
 			&q.ValorNoite,
 			&q.Reembolso,
 			&q.Foto,
@@ -53,19 +53,57 @@ func (r RepoQuartos) BuscarTodosQuartosDeUsuarioPorID(userID int) ([]models.Quar
 	return quartos, nil
 }
 
-func (r RepoQuartos) CriaQuarto(q models.Quarto) error {
+func (r RepoQuartos) BuscarTodosQuartosDePropriedadePorID(propriedadeID int) ([]models.Quarto, error) {
 	query := `
-		INSERT INTO quartos (nome, valor_noite, reembolso, foto, disponivel, propriedade, dono) 
-		VALUES (?, ?, ?, ?, ?, ?, ?)
+		SELECT id, nome, descricao, valor_noite, reembolso, foto, disponivel, propriedade, dono
+		FROM quartos
+		WHERE propriedade = ?
+	`
+	rows, err := r.db.Query(query, propriedadeID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var quartos []models.Quarto
+	for rows.Next() {
+		var q models.Quarto
+		if err := rows.Scan(
+			&q.ID,
+			&q.Nome,
+			&q.Descricao,
+			&q.ValorNoite,
+			&q.Reembolso,
+			&q.Foto,
+			&q.Disponivel,
+			&q.Propriedade,
+			&q.Dono,
+		); err != nil {
+			return nil, err
+		}
+		quartos = append(quartos, q)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return quartos, nil
+}
+
+func (r RepoQuartos) CriaQuarto(q models.Quarto, userID int) error {
+	query := `
+		INSERT INTO quartos (nome, descricao, valor_noite, reembolso, foto, disponivel, propriedade, dono)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 	`
 	_, err := r.db.Exec(query,
 		q.Nome,
+		q.Descricao,
 		q.ValorNoite,
 		q.Reembolso,
 		q.Foto,
 		q.Disponivel,
 		q.Propriedade,
-		q.Dono,
+		userID,
 	)
 
 	return err
@@ -73,7 +111,7 @@ func (r RepoQuartos) CriaQuarto(q models.Quarto) error {
 
 func (r RepoQuartos) BuscaQuartoPorNome(nome string, userID int) (models.Quarto, error) {
 	query := `
-		SELECT id, nome, valor_noite, reembolso, foto, disponivel, propriedade, dono 
+		SELECT id, nome, descricao, valor_noite, reembolso, foto, disponivel, propriedade, dono
 		FROM quartos 
 		WHERE nome = ? AND dono = ?
 	`
@@ -82,6 +120,7 @@ func (r RepoQuartos) BuscaQuartoPorNome(nome string, userID int) (models.Quarto,
 	err := r.db.QueryRow(query, nome, userID).Scan(
 		&q.ID,
 		&q.Nome,
+		&q.Descricao,
 		&q.ValorNoite,
 		&q.Reembolso,
 		&q.Foto,
@@ -108,12 +147,13 @@ func (r RepoQuartos) DeletaQuartoPorNome(nome string, userID int) error {
 func (r RepoQuartos) AtualizaQuarto(q models.Quarto) error {
 	query := `
 		UPDATE quartos 
-		SET nome = ?, valor_noite = ?, reembolso = ?, foto = ?, disponivel = ?
+		SET nome = ?, descricao = ?, valor_noite = ?, reembolso = ?, foto = ?, disponivel = ?
 		WHERE id = ? AND dono = ?
 	`
 
 	_, err := r.db.Exec(query,
 		q.Nome,
+		q.Descricao,
 		q.ValorNoite,
 		q.Reembolso,
 		q.Foto,
